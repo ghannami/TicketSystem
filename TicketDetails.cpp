@@ -75,7 +75,7 @@ void TicketDetails::setTicketID(int ticketID)
     m_ticketID = ticketID;
     ui->ticketIDLabel->setText(QString::number(m_ticketID));
     loadComments();
-    QSqlQuery query("SELECT state, from_user, to_user FROM ticket where id = "+QString::number(m_ticketID), Global::i()->db());
+    QSqlQuery query("SELECT state, from_user, to_user, priority FROM ticket where id = "+QString::number(m_ticketID), Global::i()->db());
     if(query.next())
     {
         m_ticketState = query.value("state").toInt();
@@ -92,6 +92,14 @@ void TicketDetails::setTicketID(int ticketID)
         if(ui->testerBox->itemData(index).toInt() == m_fromUserID)
         {
             ui->testerBox->setCurrentIndex(index);
+        }
+    }
+
+    for(int index = 0; index < ui->priorityBox->count(); index++)
+    {
+        if(ui->priorityBox->itemData(index).toInt() == query.value("priority").toInt())
+        {
+            ui->priorityBox->setCurrentIndex(index);
         }
     }
 
@@ -126,12 +134,16 @@ void TicketDetails::setTicketID(int ticketID)
         ui->toUserBox->setEnabled(true);
         ui->send->setEnabled(true);
         ui->sendToLabel->setEnabled(true);
-        if(Global::i()->userID() != m_toUserID && m_ticketState == 1)
+        if(Global::i()->userID() != m_toUserID && (m_ticketState == 1 || m_ticketState == 2))
         {
             ui->changeState->setDisabled(true);
+            ui->reopen->setDisabled(true);
         }
         else
+        {
             ui->changeState->setEnabled(true);
+            ui->reopen->setEnabled(true);
+        }
     }
 }
 

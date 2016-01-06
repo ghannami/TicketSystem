@@ -144,7 +144,7 @@ void TicketModel::updateModel()
     if(filterObject()->projectID() > 0)
         q+= " AND t.project = " +QString::number(filterObject()->projectID()) + " ";
 
-    q           += "order by prio.number desc, t.date desc;";
+    q           += "order by prio.number desc, t.date asc;";
 
     QSqlQuery query(q, Global::i()->db());
     while(query.next())
