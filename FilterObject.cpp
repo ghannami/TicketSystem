@@ -6,6 +6,8 @@ FilterObject::FilterObject()
     setStateID(0);
     setTypeID(0);
     setPriorityID(0);
+    setProjectID(0);
+    setCategorieID(0);
 }
 
 int FilterObject::toUserID() const
