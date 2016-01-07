@@ -1,6 +1,9 @@
 #include "TicketItem.h"
 #include <QColor>
 #include <QPixmap>
+#include <QFont>
+#include "Global.h"
+#include <QSqlQuery>
 
 TicketItem::TicketItem()
 {
@@ -59,11 +62,24 @@ QVariant TicketItem::data(int column, int role) const
         {
             QPixmap p;
             if(m_record.value("type") == 1)
+            {
                 p = QPixmap(":/icon/bug");
+                return p.scaledToHeight(22, Qt::SmoothTransformation);
+            }
             else if(m_record.value("type")==2)
+            {
                 p = QPixmap(":/icon/tip");
-
-            return p.scaledToHeight(22, Qt::SmoothTransformation);
+                return p.scaledToHeight(22, Qt::SmoothTransformation);
+            }
+        }
+    }
+    else if(role == Qt::FontRole)
+    {
+        if(!m_viewed)
+        {
+            QFont f;
+            f.setBold(true);
+            return f;
         }
     }
     return QVariant();
@@ -93,5 +109,44 @@ Qt::ItemFlags TicketItem::flags()
 int TicketItem::ticketID() const
 {
     return m_record.value("id").toInt();
+}
+
+bool TicketItem::viewed() const
+{
+    return m_viewed;
+}
+
+void TicketItem::setViewed(bool viewed)
+{
+    if(m_viewed != viewed)
+    {
+        m_viewed = viewed;
+        int v = 0;
+        if(m_viewed)
+            v = 1;
+        QSqlQuery query(QString("UPDATE comments set viewed = %1 where ticket = %2 and to_user = %3")
+                        .arg(v).arg(ticketID()).arg(Global::i()->userID()), Global::i()->db());
+        query.exec();
+    }
+}
+
+int TicketItem::fromUser() const
+{
+    return m_record.value("from_user").toInt();
+}
+
+int TicketItem::toUser() const
+{
+    return m_record.value("to_user").toInt();
+}
+
+int TicketItem::processedBy() const
+{
+    return m_record.value("processed_by").toInt();
+}
+
+int TicketItem::testedBy() const
+{
+    return m_record.value("tested_by").toInt();
 }
 

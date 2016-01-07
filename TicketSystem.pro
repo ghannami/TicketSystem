@@ -30,7 +30,8 @@ SOURCES += main.cpp\
     NewTicket.cpp \
     LoginWidget.cpp \
     Global.cpp \
-    TicketDetails.cpp
+    TicketDetails.cpp \
+    CommentItem.cpp
 
 HEADERS  += MainWindow.h \
     TicketModel.h \
@@ -39,7 +40,8 @@ HEADERS  += MainWindow.h \
     NewTicket.h \
     LoginWidget.h \
     Global.h \
-    TicketDetails.h
+    TicketDetails.h \
+    CommentItem.h
 
 FORMS    += mainwindow.ui \
     NewTicket.ui \

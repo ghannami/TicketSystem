@@ -3,6 +3,8 @@
 #include "Global.h"
 #include <QSqlQuery>
 #include <QDateTime>
+#include "CommentItem.h"
+#include <QVariant>
 
 NewTicket::NewTicket(QWidget *parent) :
     QDialog(parent),
@@ -37,17 +39,21 @@ void NewTicket::onSave()
     query.bindValue(":date", QDateTime::currentDateTime());
     query.exec();
 
+    int id = query.lastInsertId().toInt();
+    CommentItem cItem;
+    cItem.setFromUserID(Global::i()->userID());
+    cItem.setToUserID(ui->toUserBox->itemData(ui->toUserBox->currentIndex()).toInt());
+    cItem.setTicketID(id);
+    cItem.setDate(QDateTime::currentDateTime());
+    cItem.setText(tr("Ticket erstellt."));
+    cItem.setViewed(0);
+    cItem.saveToDB();
+
     if(!ui->comment->toPlainText().isEmpty())
     {
-        int id = query.lastInsertId().toInt();
-        query.prepare("INSERT INTO comments (date, from_user, to_user, ticket, text) "
-                      "VALUES (:date, :from_user, :to_user, :ticket, :text)");
-        query.bindValue(":date", QDateTime::currentDateTime());
-        query.bindValue(":from_user", Global::i()->userID());
-        query.bindValue(":to_user", ui->toUserBox->itemData(ui->toUserBox->currentIndex()));
-        query.bindValue(":ticket", id);
-        query.bindValue(":text", ui->comment->toPlainText());
-        query.exec();
+        cItem.setDate(QDateTime::currentDateTime());
+        cItem.setText(ui->comment->toPlainText());
+        cItem.saveToDB();
     }
     accept();
 }
@@ -57,39 +63,43 @@ void NewTicket::setupeBoxes()
     ui->typeBox->clear();
     ui->toUserBox->clear();
     ui->priorityBox->clear();
-
-    QSqlQuery query("SELECT name, id From tickettype order by id asc;", Global::i()->db());
     int i = 0;
-    while(query.next())
+    QMapIterator<int, QString>mip(Global::i()->users());
+    while(mip.hasNext())
     {
-        ui->typeBox->insertItem(i++, query.value("name").toString(),query.value("id"));
+        mip.next();
+        ui->toUserBox->insertItem(i++, mip.value(),mip.key());
     }
 
-    query = QSqlQuery("SELECT name, id From user order by id asc;", Global::i()->db());
     i = 0;
-    while(query.next())
+    mip = QMapIterator<int, QString>(Global::i()->prioritys());
+    while(mip.hasNext())
     {
-        ui->toUserBox->insertItem(i++, query.value("name").toString(),query.value("id"));
+        mip.next();
+        ui->priorityBox->insertItem(i++, mip.value(),mip.key());
     }
 
-    query = QSqlQuery("SELECT name, id From priority order by id asc;", Global::i()->db());
     i = 0;
-    while(query.next())
+    mip = QMapIterator<int, QString>(Global::i()->types());
+    while(mip.hasNext())
     {
-        ui->priorityBox->insertItem(i++, query.value("name").toString(),query.value("id"));
+        mip.next();
+        ui->typeBox->insertItem(i++, mip.value(),mip.key());
     }
 
-    query = QSqlQuery("SELECT name, id From categories order by id asc;", Global::i()->db());
     i = 0;
-    while(query.next())
+    mip = QMapIterator<int, QString>(Global::i()->categories());
+    while(mip.hasNext())
     {
-        ui->categorieBox->insertItem(i++, query.value("name").toString(),query.value("id"));
+        mip.next();
+        ui->categorieBox->insertItem(i++, mip.value(),mip.key());
     }
 
-    query = QSqlQuery("SELECT name, id From projects order by id asc;", Global::i()->db());
     i = 0;
-    while(query.next())
+    mip = QMapIterator<int, QString>(Global::i()->projects());
+    while(mip.hasNext())
     {
-        ui->projectBox->insertItem(i++, query.value("name").toString(),query.value("id"));
+        mip.next();
+        ui->projectBox->insertItem(i++, mip.value(),mip.key());
     }
 }

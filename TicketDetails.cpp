@@ -5,26 +5,33 @@
 #include <QDateTime>
 #include <QSqlError>
 #include <QDebug>
+#include "TicketModel.h"
+#include "CommentItem.h"
+#include "TicketItem.h"
 
-TicketDetails::TicketDetails(QWidget *parent) :
+TicketDetails::TicketDetails(TicketModel *model, QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::TicketDetails)
+    ui(new Ui::TicketDetails),
+    m_model(model)
 {
     ui->setupUi(this);
-
-    QSqlQuery query("SELECT name, id From user order by id asc;", Global::i()->db());
     int i = 0;
-    while(query.next())
+    m_blockFieldsChange = false;
+    QMapIterator<int, QString>mip(Global::i()->users());
+    while(mip.hasNext())
     {
-        ui->toUserBox->insertItem(i, query.value("name").toString(),query.value("id"));
-        ui->ticketToUserBox->insertItem(i++, query.value("name").toString(),query.value("id"));
-        ui->testerBox->insertItem(i++, query.value("name").toString(),query.value("id"));
+        mip.next();
+        ui->commentToUserBox->insertItem(i, mip.value(),mip.key());
+        ui->ticketToUserBox->insertItem(i, mip.value(),mip.key());
+        ui->testerBox->insertItem(i, mip.value(),mip.key());
+        i++;
     }
-    query = QSqlQuery("SELECT name, id From priority order by id asc;", Global::i()->db());
     i = 0;
-    while(query.next())
+    mip = QMapIterator<int, QString>(Global::i()->prioritys());
+    while(mip.hasNext())
     {
-        ui->priorityBox->insertItem(i++, query.value("name").toString(),query.value("id"));
+        mip.next();
+        ui->priorityBox->insertItem(i++, mip.value(),mip.key());
     }
 
     connect(ui->send, SIGNAL(clicked(bool)), this, SLOT(send()));
@@ -45,7 +52,7 @@ void TicketDetails::loadComments()
 {
     ui->history->clear();
 
-    QString q = "SELECT c.text, c.date, u1.name as fromuser, u2.name as touser ";
+    QString q = "SELECT c.text, c.date, c.viewed, u1.name as fromuser, u2.name as touser ";
     q += "FROM comments c, user u1, user u2 ";
     q += "where c.from_user = u1.id and c.to_user = u2.id and c.ticket = ";
     q += QString::number(m_ticketID) + " ";
@@ -72,7 +79,20 @@ int TicketDetails::ticketID() const
 
 void TicketDetails::setTicketID(int ticketID)
 {
+    if(m_ticketID == ticketID)
+        return;
+
     m_ticketID = ticketID;
+    if(m_model->item(m_model->index(m_ticketID)))
+    {
+        m_model->item(m_model->index(m_ticketID))->setViewed(true);
+    }
+    updateTicket();
+}
+
+void TicketDetails::updateTicket()
+{
+    m_blockFieldsChange = true;
     ui->ticketIDLabel->setText(QString::number(m_ticketID));
     loadComments();
     QSqlQuery query("SELECT state, from_user, to_user, priority FROM ticket where id = "+QString::number(m_ticketID), Global::i()->db());
@@ -82,12 +102,15 @@ void TicketDetails::setTicketID(int ticketID)
         m_fromUserID = query.value("from_user").toInt();
         m_toUserID = query.value("to_user").toInt();
     }
-    for(int index = 0; index < ui->toUserBox->count(); index++)
+    for(int index = 0; index < ui->commentToUserBox->count(); index++)
     {
-        if(ui->toUserBox->itemData(index).toInt() == m_toUserID)
+        if(ui->ticketToUserBox->itemData(index).toInt() == m_toUserID)
         {
-            ui->toUserBox->setCurrentIndex(index);
             ui->ticketToUserBox->setCurrentIndex(index);
+        }
+        if(ui->commentToUserBox->itemData(index).toInt() == m_fromUserID)
+        {
+            ui->commentToUserBox->setCurrentIndex(index);
         }
         if(ui->testerBox->itemData(index).toInt() == m_fromUserID)
         {
@@ -103,9 +126,15 @@ void TicketDetails::setTicketID(int ticketID)
         }
     }
 
+    ui->createdByLabel2->setText(Global::i()->users().value(m_fromUserID));
+
     ui->reopen->setVisible(false);
     ui->testerLabel->setVisible(false);
     ui->testerBox->setVisible(false);
+    ui->processedByLabel1->setVisible(false);
+    ui->processedByLabel2->setVisible(false);
+    ui->testedByLabel1->setVisible(false);
+    ui->testedByLabel2->setVisible(false);
 
     if(m_ticketState == 1)
     {
@@ -117,21 +146,40 @@ void TicketDetails::setTicketID(int ticketID)
     {
         ui->changeState->setText(tr("Schließen"));
         ui->reopen->setVisible(true);
+
+        ui->processedByLabel1->setVisible(true);
+        ui->processedByLabel2->setVisible(true);
+        TicketItem *item = m_model->item(m_model->index(m_ticketID));
+        if(item)
+            ui->processedByLabel2->setText(Global::i()->users().value(item->processedBy()));
     }
     if(m_ticketID <= 0 || m_ticketState == 3)
     {
         ui->comment->setDisabled(true);
         ui->groupBox->setDisabled(true);
-        ui->toUserBox->setDisabled(true);
+        ui->commentToUserBox->setDisabled(true);
         ui->send->setDisabled(true);
         ui->sendToLabel->setDisabled(true);
         ui->changeState->setDisabled(true);
+        if(m_ticketState == 3)
+        {
+            ui->processedByLabel1->setVisible(true);
+            ui->processedByLabel2->setVisible(true);
+            ui->testedByLabel1->setVisible(true);
+            ui->testedByLabel2->setVisible(true);
+            TicketItem *item = m_model->item(m_model->index(m_ticketID));
+            if(item)
+            {
+                ui->processedByLabel2->setText(Global::i()->users().value(item->processedBy()));
+                ui->testedByLabel2->setText(Global::i()->users().value(item->processedBy()));
+            }
+        }
     }
     else
     {
         ui->comment->setEnabled(true);
         ui->groupBox->setEnabled(true);
-        ui->toUserBox->setEnabled(true);
+        ui->commentToUserBox->setEnabled(true);
         ui->send->setEnabled(true);
         ui->sendToLabel->setEnabled(true);
         if(Global::i()->userID() != m_toUserID && (m_ticketState == 1 || m_ticketState == 2))
@@ -145,19 +193,21 @@ void TicketDetails::setTicketID(int ticketID)
             ui->reopen->setEnabled(true);
         }
     }
+    m_blockFieldsChange = false;
+
 }
 
 void TicketDetails::send()
 {
-    QSqlQuery query(Global::i()->db());
-    query.prepare("INSERT INTO comments (date, from_user, to_user, ticket, text) "
-                  "VALUES (:date, :from_user, :to_user, :ticket, :text)");
-    query.bindValue(":date", QDateTime::currentDateTime());
-    query.bindValue(":from_user", Global::i()->userID());
-    query.bindValue(":to_user", ui->toUserBox->itemData(ui->toUserBox->currentIndex()));
-    query.bindValue(":ticket", m_ticketID);
-    query.bindValue(":text", ui->comment->toPlainText());
-    query.exec();
+    CommentItem cItem;
+    cItem.setDate(QDateTime::currentDateTime());
+    cItem.setFromUserID(Global::i()->userID());
+    cItem.setToUserID(ui->commentToUserBox->itemData(ui->commentToUserBox->currentIndex()).toInt());
+    cItem.setTicketID(m_ticketID);
+    cItem.setText(ui->comment->toPlainText());
+    cItem.setViewed(0);
+    cItem.saveToDB();
+
     ui->comment->clear();
     loadComments();
     //emit changed();
@@ -165,30 +215,46 @@ void TicketDetails::send()
 
 void TicketDetails::onFieldsChanged()
 {
-    QSqlQuery query(QString("UPDATE ticket set priority = %1, to_user = %2 WHERE id = %3")
-                    .arg(ui->priorityBox->itemData(ui->priorityBox->currentIndex()).toInt())
-                    .arg(ui->ticketToUserBox->itemData(ui->ticketToUserBox->currentIndex()).toInt()).arg(m_ticketID), Global::i()->db());
-    query.exec();
-    setTicketID(m_ticketID);
-    emit changed();
+    if(!m_blockFieldsChange)
+    {
+        QSqlQuery query(QString("UPDATE ticket set priority = %1, to_user = %2 WHERE id = %3")
+                        .arg(ui->priorityBox->itemData(ui->priorityBox->currentIndex()).toInt())
+                        .arg(ui->ticketToUserBox->itemData(ui->ticketToUserBox->currentIndex()).toInt()).arg(m_ticketID), Global::i()->db());
+        query.exec();
+        updateTicket();
+        emit changed();
+    }
 }
 
 void TicketDetails::changeTicketState()
 {
+    CommentItem cItem;
+    cItem.setDate(QDateTime::currentDateTime());
+    cItem.setFromUserID(Global::i()->userID());
+    cItem.setToUserID(ui->commentToUserBox->itemData(ui->commentToUserBox->currentIndex()).toInt());
+    cItem.setTicketID(m_ticketID);
+    cItem.setViewed(0);
+
     if(m_ticketState == 1)
     {
-        QSqlQuery query(QString("UPDATE ticket set state = 2, to_user = %1 where id = %2")
+        QSqlQuery query(QString("UPDATE ticket set state = 2, to_user = %1, processed_by = %2 where id = %3")
                             .arg(ui->testerBox->itemData(ui->testerBox->currentIndex()).toInt())
+                            .arg(Global::i()->userID())
                             .arg(m_ticketID), Global::i()->db());
         query.exec();
-        setTicketID(m_ticketID);
+        cItem.setText(tr("Neuer Status: ")+Global::i()->stats().value(2));
+        cItem.saveToDB();
+        updateTicket();
         emit changed();
     }
     else if(m_ticketState == 2)
     {
-        QSqlQuery query(QString("UPDATE ticket set state = 3 where id = %1").arg(m_ticketID), Global::i()->db());
+        QSqlQuery query(QString("UPDATE ticket set state = 3, tested_by = %1 where id = %2")
+                        .arg(Global::i()->userID()).arg(m_ticketID), Global::i()->db());
         query.exec();
-        setTicketID(m_ticketID);
+        cItem.setText(tr("Neuer Status: ")+Global::i()->stats().value(3));
+        cItem.saveToDB();
+        updateTicket();
         emit changed();
     }
 }
@@ -199,7 +265,7 @@ void TicketDetails::reopenTicket()
     {
         QSqlQuery query(QString("UPDATE ticket set state = 1 where id = %1").arg(m_ticketID), Global::i()->db());
         query.exec();
-        setTicketID(m_ticketID);
+        updateTicket();
         emit changed();
     }
 }

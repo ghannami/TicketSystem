@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CommentItem.cpp" />
     <ClCompile Include="FilterObject.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_LoginWidget.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -52,12 +53,15 @@
     <ClCompile Include="TicketModel.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CommentItem.h" />
     <ClInclude Include="FilterObject.h" />
     <ClInclude Include="GeneratedFiles\ui_LoginWidget.h" />
     <ClInclude Include="GeneratedFiles\ui_mainwindow.h" />
     <ClInclude Include="GeneratedFiles\ui_NewTicket.h" />
     <ClInclude Include="GeneratedFiles\ui_TicketDetails.h" />
     <ClInclude Include="Global.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="resource1.h" />
     <ClInclude Include="TicketItem.h" />
     <CustomBuild Include="TicketDetails.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
@@ -182,6 +186,10 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\ui_%(Filename).h;%(Outputs)</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\uic.exe" -o ".\GeneratedFiles\ui_%(Filename).h" "%(FullPath)"</Command>
     </CustomBuild>
+    <None Include="winicon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="TicketSystem.rc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{BB9DB050-F425-49EE-A5F8-333F37D2B011}</ProjectGuid>

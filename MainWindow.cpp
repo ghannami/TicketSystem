@@ -47,7 +47,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->ticketView->verticalHeader()->setDefaultSectionSize(24);
     setupeBoxes();
 
-    m_ticketDetails = new TicketDetails();
+    m_ticketDetails = new TicketDetails(m_model);
     QVBoxLayout *lay = new QVBoxLayout();
     lay->setContentsMargins(0,0,0,0);
     lay->addWidget(m_ticketDetails);
@@ -130,51 +130,61 @@ void MainWindow::setupeBoxes()
     ui->typeBox->clear();
     ui->toUserBox->clear();
     ui->priorityBox->clear();
-    QSqlQuery query("SELECT name, id From state order by id asc;", Global::i()->db());
-    int i = 0;
-    ui->stateBox->insertItem(i++, tr("Alle"),0);
-    while(query.next())
+    ui->moduleBox->clear();
+    ui->projectBox->clear();
+
+    ui->stateBox->insertItem(0,tr("Alle"),0);
+    ui->typeBox->insertItem(0,tr("Alle"),0);
+    ui->toUserBox->insertItem(0,tr("Alle"),0);
+    ui->priorityBox->insertItem(0,tr("Alle"),0);
+    ui->moduleBox->insertItem(0,tr("Alle"),0);
+    ui->projectBox->insertItem(0,tr("Alle"),0);
+
+    int i=1;
+    QMapIterator<int, QString>mip(Global::i()->users());
+    while(mip.hasNext())
     {
-        ui->stateBox->insertItem(i++, query.value("name").toString(),query.value("id"));
+        mip.next();
+        ui->toUserBox->insertItem(i++, mip.value(),mip.key());
     }
 
-    query = QSqlQuery("SELECT name, id From tickettype order by id asc;", Global::i()->db());
-    i = 0;
-    ui->typeBox->insertItem(i++, tr("Alle"),0);
-    while(query.next())
+    i = 1;
+    mip = QMapIterator<int, QString>(Global::i()->prioritys());
+    while(mip.hasNext())
     {
-        ui->typeBox->insertItem(i++, query.value("name").toString(),query.value("id"));
+        mip.next();
+        ui->priorityBox->insertItem(i++, mip.value(),mip.key());
     }
 
-    query = QSqlQuery("SELECT name, id From user order by id asc;", Global::i()->db());
-    i = 0;
-    ui->toUserBox->insertItem(i++, tr("Alle"),0);
-    while(query.next())
+    i = 1;
+    mip = QMapIterator<int, QString>(Global::i()->stats());
+    while(mip.hasNext())
     {
-        ui->toUserBox->insertItem(i++, query.value("name").toString(),query.value("id"));
+        mip.next();
+        ui->stateBox->insertItem(i++, mip.value(),mip.key());
     }
 
-    query = QSqlQuery("SELECT name, id From priority order by id asc;", Global::i()->db());
-    i = 0;
-    ui->priorityBox->insertItem(i++, tr("Alle"),0);
-    while(query.next())
+    i = 1;
+    mip = QMapIterator<int, QString>(Global::i()->types());
+    while(mip.hasNext())
     {
-        ui->priorityBox->insertItem(i++, query.value("name").toString(),query.value("id"));
+        mip.next();
+        ui->typeBox->insertItem(i++, mip.value(),mip.key());
     }
 
-    query = QSqlQuery("SELECT name, id From categories order by id asc;", Global::i()->db());
-    i = 0;
-    ui->moduleBox->insertItem(i++, tr("Alle"),0);
-    while(query.next())
+    i = 1;
+    mip = QMapIterator<int, QString>(Global::i()->categories());
+    while(mip.hasNext())
     {
-        ui->moduleBox->insertItem(i++, query.value("name").toString(),query.value("id"));
+        mip.next();
+        ui->moduleBox->insertItem(i++, mip.value(),mip.key());
     }
 
-    query = QSqlQuery("SELECT name, id From projects order by id asc;", Global::i()->db());
-    i = 0;
-    ui->projectBox->insertItem(i++, tr("Alle"),0);
-    while(query.next())
+    i = 1;
+    mip = QMapIterator<int, QString>(Global::i()->projects());
+    while(mip.hasNext())
     {
-        ui->projectBox->insertItem(i++, query.value("name").toString(),query.value("id"));
+        mip.next();
+        ui->projectBox->insertItem(i++, mip.value(),mip.key());
     }
 }

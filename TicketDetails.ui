@@ -20,22 +20,19 @@
       <string/>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="4" column="2">
-       <widget class="QPushButton" name="changeState">
+      <item row="5" column="1">
+       <widget class="QLabel" name="processedByLabel1">
         <property name="text">
-         <string>Schließen</string>
+         <string>Erledigt von</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
-       <widget class="QLabel" name="label_3">
+      <item row="6" column="1">
+       <widget class="QLabel" name="testedByLabel1">
         <property name="text">
-         <string>Zugewiesen an</string>
+         <string>Getestet von</string>
         </property>
        </widget>
-      </item>
-      <item row="2" column="2">
-       <widget class="QComboBox" name="ticketToUserBox"/>
       </item>
       <item row="1" column="2">
        <widget class="QComboBox" name="priorityBox"/>
@@ -47,7 +44,7 @@
         </property>
        </widget>
       </item>
-      <item row="4" column="1">
+      <item row="7" column="1">
        <widget class="QPushButton" name="reopen">
         <property name="text">
          <string>Wieder öffnen</string>
@@ -92,11 +89,75 @@
         </property>
        </widget>
       </item>
+      <item row="2" column="2">
+       <widget class="QComboBox" name="ticketToUserBox"/>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Zugewiesen an</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="2">
+       <widget class="QPushButton" name="changeState">
+        <property name="text">
+         <string>Schließen</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="2">
+       <widget class="QLabel" name="processedByLabel2">
+        <property name="text">
+         <string>.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="2">
+       <widget class="QLabel" name="testedByLabel2">
+        <property name="text">
+         <string>.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QLabel" name="createdByLabel1">
+        <property name="text">
+         <string>Erstellt von</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="2">
+       <widget class="QLabel" name="createdByLabel2">
+        <property name="text">
+         <string>.</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
    <item>
-    <widget class="QPlainTextEdit" name="history"/>
+    <widget class="QPlainTextEdit" name="history">
+     <property name="tabChangesFocus">
+      <bool>false</bool>
+     </property>
+     <property name="documentTitle">
+      <string>Verlauf</string>
+     </property>
+     <property name="undoRedoEnabled">
+      <bool>false</bool>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+     <property name="tabStopWidth">
+      <number>80</number>
+     </property>
+     <property name="backgroundVisible">
+      <bool>false</bool>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QTextEdit" name="comment">
@@ -118,7 +179,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="toUserBox"/>
+      <widget class="QComboBox" name="commentToUserBox"/>
      </item>
      <item>
       <widget class="QPushButton" name="send">

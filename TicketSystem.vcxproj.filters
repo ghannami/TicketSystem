@@ -108,8 +108,11 @@
     <ClCompile Include="TicketItem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CommentItem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="TicketModel.cpp">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -134,10 +137,17 @@
     <ClInclude Include="TicketItem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource1.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CommentItem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="LICENSE" />
-    <None Include="README.md" />
     <None Include="icons\bug.png">
       <Filter>Resource Files</Filter>
     </None>
@@ -156,6 +166,13 @@
     <None Include="icons\key.png">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="LICENSE">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="README.md">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="winicon.ico" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="LoginWidget.ui">
@@ -185,5 +202,8 @@
     <CustomBuild Include="TicketDetails.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="TicketSystem.rc" />
   </ItemGroup>
 </Project>

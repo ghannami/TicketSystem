@@ -29,8 +29,17 @@ public:
     Qt::ItemFlags flags();
     int ticketID() const;
 
+
+    bool viewed() const;
+    void setViewed(bool viewed);
+
+    int fromUser() const;
+    int toUser() const;
+    int processedBy() const;
+    int testedBy() const;
 private:
     QSqlRecord m_record;
+    bool m_viewed;
 };
 
 #endif // TICKETITEM_H

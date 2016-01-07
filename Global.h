@@ -2,6 +2,7 @@
 #define GLOBAL_H
 #include <QString>
 #include <QSqlDatabase>
+#include <QMap>
 
 class Global
 {
@@ -20,11 +21,29 @@ public:
     int userID() const;
     void setUserID(int userID);
 
+    QMap<int, QString> stats() const;
+
+    QMap<int, QString> users() const;
+
+    QMap<int, QString> projects() const;
+
+    QMap<int, QString> types() const;
+
+    QMap<int, QString> categories() const;
+
+    QMap<int, QString> prioritys() const;
+
 private:
     static Global *m_instance;
     QString m_userName;
     QSqlDatabase m_db;
     int m_userID;
+    QMap<int, QString> m_stats;
+    QMap<int, QString> m_users;
+    QMap<int, QString> m_projects;
+    QMap<int, QString> m_types;
+    QMap<int, QString> m_categories;
+    QMap<int, QString> m_prioritys;
 };
 
 #endif // GLOBAL_H

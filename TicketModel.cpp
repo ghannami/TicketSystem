@@ -127,7 +127,16 @@ void TicketModel::updateModel()
     layoutAboutToBeChanged();
     m_items.clear();
 
+    QMap<int, int> unread;
+    QSqlQuery unredQuery(QString("select id, ticket, max(viewed) as viewed from comments where to_user = %1 and viewed = 0 group by ticket")
+                         .arg(Global::i()->userID()), Global::i()->db());
+    while(unredQuery.next())
+    {
+        unread.insert(unredQuery.value("ticket").toInt(), unredQuery.value("viewed").toInt());
+    }
+
     QString q   = "SELECT t.id as id, t.title as title, s.id as state, s.name as statename , t.date as date, ";
+    q           += "t.processed_by as processed_by, t.tested_by as tested_by, ";
     q           += "user1.name as fromuser, user2.name as touser, prio.name as priorityname, t.type, pro.name as projectname, cat.name as categoriename ";
     q           += "FROM ticket t, state s, user user1, user user2, priority prio, projects pro, categories cat ";
     q           += "where t.state = s.id and user1.id = t.from_user and user2.id = t.to_user and prio.id = t.priority and pro.id = t.project and cat.id = t.categorie ";
@@ -144,13 +153,18 @@ void TicketModel::updateModel()
     if(filterObject()->projectID() > 0)
         q+= " AND t.project = " +QString::number(filterObject()->projectID()) + " ";
 
-    q           += "order by prio.number desc, t.date asc;";
+    q           += "order by state asc, prio.number desc, t.date asc;";
 
     QSqlQuery query(q, Global::i()->db());
     while(query.next())
     {
         TicketItem *item = new TicketItem();
         item->setRecord(query.record());
+        if(unread.contains(query.value("id").toInt()))
+            item->setViewed(unread.value(query.value("id").toBool()));
+        else
+            item->setViewed(true);
+
         addItem(item);
     }
     layoutChanged();
