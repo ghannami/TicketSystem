@@ -44,7 +44,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->ticketView->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->ticketView->horizontalHeader()->setStretchLastSection(true);
     ui->ticketView->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
-    ui->ticketView->verticalHeader()->setDefaultSectionSize(24);
+    ui->ticketView->verticalHeader()->setDefaultSectionSize(20);
     setupeBoxes();
 
     m_ticketDetails = new TicketDetails(m_model);

@@ -74,6 +74,9 @@
    </item>
    <item>
     <widget class="QLineEdit" name="title">
+     <property name="maxLength">
+      <number>100</number>
+     </property>
      <property name="placeholderText">
       <string>Titel</string>
      </property>

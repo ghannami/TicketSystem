@@ -50,11 +50,11 @@ QVariant TicketItem::data(int column, int role) const
     else if(role == Qt::BackgroundColorRole)
     {
         if(m_record.value("state").toInt() == 1)
-            return QColor(230,0,0,100);
+            return QColor(230,0,0, 50);
         if(m_record.value("state").toInt() == 2)
-            return QColor(0,0,230,100);
+            return QColor(0,0,250, 50);
         if(m_record.value("state").toInt() == 3)
-            return QColor(0,230,50,100);
+            return QColor(0,250,50, 50);
     }
     else if(role == Qt::DecorationRole)
     {

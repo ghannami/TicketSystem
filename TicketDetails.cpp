@@ -171,7 +171,7 @@ void TicketDetails::updateTicket()
             if(item)
             {
                 ui->processedByLabel2->setText(Global::i()->users().value(item->processedBy()));
-                ui->testedByLabel2->setText(Global::i()->users().value(item->processedBy()));
+                ui->testedByLabel2->setText(Global::i()->users().value(item->testedBy()));
             }
         }
     }
@@ -237,10 +237,13 @@ void TicketDetails::changeTicketState()
 
     if(m_ticketState == 1)
     {
-        QSqlQuery query(QString("UPDATE ticket set state = 2, to_user = %1, processed_by = %2 where id = %3")
-                            .arg(ui->testerBox->itemData(ui->testerBox->currentIndex()).toInt())
-                            .arg(Global::i()->userID())
-                            .arg(m_ticketID), Global::i()->db());
+        QSqlQuery query(Global::i()->db());
+        query.prepare("UPDATE ticket set state = :state, to_user = :to_user, processed_by = :processed_by, processed_on = :processed_on where id = :id");
+        query.bindValue(":state", 2);
+        query.bindValue(":to_user", ui->testerBox->itemData(ui->testerBox->currentIndex()).toInt());
+        query.bindValue(":processed_by", Global::i()->userID());
+        query.bindValue(":processed_on", QDateTime::currentDateTime());
+        query.bindValue(":id", m_ticketID);
         query.exec();
         cItem.setText(tr("Neuer Status: ")+Global::i()->stats().value(2));
         cItem.saveToDB();
@@ -249,8 +252,12 @@ void TicketDetails::changeTicketState()
     }
     else if(m_ticketState == 2)
     {
-        QSqlQuery query(QString("UPDATE ticket set state = 3, tested_by = %1 where id = %2")
-                        .arg(Global::i()->userID()).arg(m_ticketID), Global::i()->db());
+        QSqlQuery query(Global::i()->db());
+        query.prepare("UPDATE ticket set state = :state, tested_by = :tested_by, tested_on = :tested_on where id = :id");
+        query.bindValue(":state", 3);
+        query.bindValue(":tested_by", Global::i()->userID());
+        query.bindValue(":tested_on", QDateTime::currentDateTime());
+        query.bindValue(":id", m_ticketID);
         query.exec();
         cItem.setText(tr("Neuer Status: ")+Global::i()->stats().value(3));
         cItem.saveToDB();
