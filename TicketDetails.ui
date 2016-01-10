@@ -20,6 +20,9 @@
       <string/>
      </property>
      <layout class="QGridLayout" name="gridLayout">
+      <property name="verticalSpacing">
+       <number>4</number>
+      </property>
       <item row="5" column="1">
        <widget class="QLabel" name="processedByLabel1">
         <property name="text">
@@ -164,7 +167,7 @@
      <property name="maximumSize">
       <size>
        <width>16777215</width>
-       <height>150</height>
+       <height>100</height>
       </size>
      </property>
     </widget>

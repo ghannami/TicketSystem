@@ -3,6 +3,8 @@
 #include <QSqlQuery>
 #include <QCryptographicHash>
 #include <QVariant>
+#include <QFile>
+#include <QDomDocument>
 
 Global *Global::m_instance = 0;
 
@@ -77,12 +79,24 @@ QString Global::userName() const
 
 void Global::connectDB()
 {
+    QDomDocument doc("DBSettings");
+    QFile file("settings.xml");
+    if (!file.open(QIODevice::ReadOnly))
+        return;
+    if (!doc.setContent(&file)) {
+        file.close();
+        return;
+    }
+    file.close();
+    QDomElement root = doc.documentElement().firstChildElement("db");
+
     m_db = QSqlDatabase::addDatabase("QMYSQL", "TicketSystem");
-    m_db.setHostName("PC-10-CC");
-    m_db.setDatabaseName("ticketsystem");
-    m_db.setUserName("TicketSystem");
-    m_db.setPassword("ticketsystem");
-    m_db.setPort(3307);
+    m_db.setHostName(root.firstChildElement("host").text());
+    m_db.setDatabaseName(root.firstChildElement("database").text());
+    m_db.setUserName(root.firstChildElement("user").text());
+    m_db.setPassword(root.firstChildElement("password").text());
+    //m_db.setPassword("67*nD3qu");
+    m_db.setPort(root.firstChildElement("port").text().toInt());
     m_db.open();
 }
 
