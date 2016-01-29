@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>876</width>
+    <width>1089</width>
     <height>696</height>
    </rect>
   </property>
@@ -20,99 +20,211 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QGroupBox" name="groupBox">
-      <property name="title">
-       <string>Filter</string>
-      </property>
-      <layout class="QGridLayout" name="gridLayout">
-       <property name="horizontalSpacing">
-        <number>12</number>
-       </property>
-       <item row="0" column="3">
-        <widget class="QLabel" name="label_3">
-         <property name="text">
-          <string>Priorität</string>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QGroupBox" name="groupBox">
+        <property name="title">
+         <string>Filter</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout">
+         <property name="horizontalSpacing">
+          <number>12</number>
          </property>
-        </widget>
-       </item>
-       <item row="1" column="5">
-        <widget class="QComboBox" name="projectBox"/>
-       </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>Status</string>
+         <item row="0" column="5">
+          <widget class="QLabel" name="label_6">
+           <property name="text">
+            <string>Projekt</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QComboBox" name="stateBox"/>
+         </item>
+         <item row="1" column="4">
+          <widget class="QComboBox" name="moduleBox"/>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>Status</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="5">
+          <widget class="QComboBox" name="projectBox"/>
+         </item>
+         <item row="0" column="3">
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>Priorität</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>Zugewiesen an</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QComboBox" name="toUserBox"/>
+         </item>
+         <item row="1" column="3">
+          <widget class="QComboBox" name="priorityBox"/>
+         </item>
+         <item row="1" column="1">
+          <widget class="QComboBox" name="typeBox"/>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLabel" name="label_4">
+           <property name="text">
+            <string>Type</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="4">
+          <widget class="QLabel" name="label_5">
+           <property name="text">
+            <string>Modul</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="groupBox_2">
+        <property name="title">
+         <string>Meine Tickets</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_2">
+         <property name="horizontalSpacing">
+          <number>20</number>
          </property>
-        </widget>
-       </item>
-       <item row="1" column="4">
-        <widget class="QComboBox" name="moduleBox"/>
-       </item>
-       <item row="1" column="0">
-        <widget class="QComboBox" name="stateBox"/>
-       </item>
-       <item row="0" column="5">
-        <widget class="QLabel" name="label_6">
-         <property name="text">
-          <string>Projekt</string>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_7">
+           <property name="text">
+            <string>Offen</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label2">
+           <property name="text">
+            <string>Testen</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label3">
+           <property name="text">
+            <string>Ungelesen</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLabel" name="myOpen">
+           <property name="text">
+            <string>0</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLabel" name="myTest">
+           <property name="text">
+            <string>0</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QLabel" name="myUnread">
+           <property name="text">
+            <string>0</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="groupBox_3">
+        <property name="title">
+         <string>Alle Tickets</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_3">
+         <property name="horizontalSpacing">
+          <number>20</number>
          </property>
-        </widget>
-       </item>
-       <item row="0" column="4">
-        <widget class="QLabel" name="label_5">
-         <property name="text">
-          <string>Modul</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="2">
-        <widget class="QComboBox" name="toUserBox"/>
-       </item>
-       <item row="1" column="3">
-        <widget class="QComboBox" name="priorityBox"/>
-       </item>
-       <item row="1" column="1">
-        <widget class="QComboBox" name="typeBox"/>
-       </item>
-       <item row="0" column="1">
-        <widget class="QLabel" name="label_4">
-         <property name="text">
-          <string>Type</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="2">
-        <widget class="QLabel" name="label_2">
-         <property name="text">
-          <string>Zugewiesen an</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="6">
-        <spacer name="horizontalSpacer">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="1" column="7">
-        <widget class="QLabel" name="logo">
-         <property name="text">
-          <string/>
-         </property>
-         <property name="pixmap">
-          <pixmap resource="rsc.qrc">:/icon/ticketx64</pixmap>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
+         <item row="1" column="1">
+          <widget class="QLabel" name="allTest">
+           <property name="text">
+            <string>0</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLabel" name="allOpen">
+           <property name="text">
+            <string>0</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_8">
+           <property name="text">
+            <string>Offen</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_9">
+           <property name="text">
+            <string>Testen</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QLabel" name="allUnread">
+           <property name="text">
+            <string>0</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_10">
+           <property name="text">
+            <string>Ungelesen</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QLabel" name="logoLabel">
+        <property name="text">
+         <string/>
+        </property>
+        <property name="pixmap">
+         <pixmap resource="rsc.qrc">:/icon/ticketx64</pixmap>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </item>
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
@@ -157,7 +269,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>876</width>
+     <width>1089</width>
      <height>21</height>
     </rect>
    </property>
