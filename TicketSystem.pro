@@ -31,7 +31,16 @@ SOURCES += main.cpp\
     LoginWidget.cpp \
     Global.cpp \
     TicketDetails.cpp \
-    CommentItem.cpp
+    CommentItem.cpp \
+    TicketsWidget.cpp \
+    ProjectTasksWidget.cpp \
+    TreeItem.cpp \
+    TreeItemData.cpp \
+    TreeModel.cpp \
+    AddTreeItemCommand.cpp \
+    RemoveTreeItemCommand.cpp \
+    ProjectItemData.cpp \
+    PTaskItemData.cpp
 
 HEADERS  += MainWindow.h \
     TicketModel.h \
@@ -41,12 +50,23 @@ HEADERS  += MainWindow.h \
     LoginWidget.h \
     Global.h \
     TicketDetails.h \
-    CommentItem.h
+    CommentItem.h \
+    TicketsWidget.h \
+    ProjectTasksWidget.h \
+    TreeItem.h \
+    TreeItemData.h \
+    TreeModel.h \
+    AddTreeItemCommand.h \
+    RemoveTreeItemCommand.h \
+    ProjectItemData.h \
+    PTaskItemData.h
 
 FORMS    += mainwindow.ui \
     NewTicket.ui \
     LoginWidget.ui \
-    TicketDetails.ui
+    TicketDetails.ui \
+    TicketsWidget.ui \
+    ProjectTasksWidget.ui
 
 RESOURCES += \
     rsc.qrc

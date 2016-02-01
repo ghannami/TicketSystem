@@ -21,6 +21,8 @@ public:
     };
 
     TicketItem();
+    ~TicketItem();
+
     QVariant data(int column, int role) const;
     void setData(int column, QVariant value, int role);
 

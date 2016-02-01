@@ -20,23 +20,23 @@ QVariant TicketModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid())
         return QVariant();
-    TicketItem *tItem = item(index);
+    std::shared_ptr<TicketItem> tItem = item(index);
     return data(tItem, index.column(), role);
 }
 
-QVariant TicketModel::data(TicketItem *item, int column, int role) const
+QVariant TicketModel::data(std::shared_ptr<TicketItem> item, int column, int role) const
 {
     return item->data(column, role);
 }
 
 bool TicketModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-    TicketItem * tItem = item(index);
+    std::shared_ptr<TicketItem> tItem = item(index);
     setData(tItem, index.column(), value, role);
     return true;
 }
 
-bool TicketModel::setData(TicketItem *item, int column, const QVariant &value, int role)
+bool TicketModel::setData(std::shared_ptr<TicketItem> item, int column, const QVariant &value, int role)
 {
     item->setData(column, value, role);
     return true;
@@ -72,9 +72,9 @@ QModelIndex TicketModel::index(int row, int column, const QModelIndex &parent) c
     if (!hasIndex(row, column, parent))
         return QModelIndex();
 
-    TicketItem *tItem = m_items.at(row);
+    std::shared_ptr<TicketItem> tItem = m_items.at(row);
     if (tItem)
-        return createIndex(row, column, tItem);
+        return createIndex(row, column, tItem.get());
     else
         return QModelIndex();
 }
@@ -89,7 +89,7 @@ int TicketModel::columnCount(const QModelIndex &parent) const
     return m_hHeaders.size();
 }
 
-TicketItem *TicketModel::item(QModelIndex index) const
+std::shared_ptr<TicketItem> TicketModel::item(QModelIndex index) const
 {
     if(!index.isValid())
         return nullptr;
@@ -99,7 +99,7 @@ TicketItem *TicketModel::item(QModelIndex index) const
         return nullptr;
 }
 
-void TicketModel::addItem(TicketItem *child)
+void TicketModel::addItem(std::shared_ptr<TicketItem>child)
 {
     layoutAboutToBeChanged();
     beginInsertRows(QModelIndex(), m_items.size(), m_items.size());
@@ -108,7 +108,7 @@ void TicketModel::addItem(TicketItem *child)
     layoutChanged();
 }
 
-void TicketModel::removeItem(TicketItem *item)
+void TicketModel::removeItem(std::shared_ptr<TicketItem> item)
 {
     layoutAboutToBeChanged();
     beginRemoveRows(QModelIndex(), m_items.indexOf(item), m_items.indexOf(item));
@@ -124,7 +124,7 @@ QModelIndex TicketModel::parent(const QModelIndex &index) const
 
 void TicketModel::updateModel()
 {
-    layoutAboutToBeChanged();
+    //layoutAboutToBeChanged();
     m_items.clear();
 
     QMap<int, int> unread;
@@ -165,9 +165,9 @@ void TicketModel::updateModel()
         else
             item->setViewed(true);
 
-        addItem(item);
+        addItem(std::shared_ptr<TicketItem>(item));
     }
-    layoutChanged();
+    //layoutChanged();
 }
 
 std::shared_ptr<FilterObject> TicketModel::filterObject() const

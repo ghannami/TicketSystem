@@ -21,17 +21,17 @@ public:
     int userID() const;
     void setUserID(int userID);
 
-    QMap<int, QString> stats() const;
+    QMap<int, QString> stats(bool reload = false);
 
-    QMap<int, QString> users() const;
+    QMap<int, QString> users(bool reload = false);
 
-    QMap<int, QString> projects() const;
+    QMap<int, QString> projects(bool reload = false);
 
-    QMap<int, QString> types() const;
+    QMap<int, QString> types(bool reload = false);
 
-    QMap<int, QString> categories() const;
+    QMap<int, QString> categories(bool reload = false);
 
-    QMap<int, QString> prioritys() const;
+    QMap<int, QString> prioritys(bool reload = false);
 
 private:
     static Global *m_instance;

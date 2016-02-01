@@ -2,11 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QSqlDatabase>
-#include <QItemSelection>
 
-class TicketModel;
-class TicketDetails;
+class TicketsWidget;
+class ProjectTasksWidget;
 
 namespace Ui {
 class MainWindow;
@@ -20,20 +18,10 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-protected slots:
-    void updateModel();
-    void refreshModel();
-    void onFilterChanged();
-    void newTicket();
-    void onSelectionChanged(const QModelIndex &current, const QModelIndex &previous);
-
-protected:
-    void setupeBoxes();
-
 private:
     Ui::MainWindow *ui;
-    TicketModel *m_model;
-    TicketDetails *m_ticketDetails;
+    TicketsWidget *m_tickets;
+    ProjectTasksWidget *m_tasks;
 };
 
 #endif // MAINWINDOW_H

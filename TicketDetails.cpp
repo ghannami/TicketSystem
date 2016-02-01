@@ -149,7 +149,7 @@ void TicketDetails::updateTicket()
 
         ui->processedByLabel1->setVisible(true);
         ui->processedByLabel2->setVisible(true);
-        TicketItem *item = m_model->item(m_model->index(m_ticketID));
+        std::shared_ptr<TicketItem> item = m_model->item(m_model->index(m_ticketID));
         if(item)
             ui->processedByLabel2->setText(Global::i()->users().value(item->processedBy()));
     }
@@ -167,7 +167,7 @@ void TicketDetails::updateTicket()
             ui->processedByLabel2->setVisible(true);
             ui->testedByLabel1->setVisible(true);
             ui->testedByLabel2->setVisible(true);
-            TicketItem *item = m_model->item(m_model->index(m_ticketID));
+            std::shared_ptr<TicketItem> item = m_model->item(m_model->index(m_ticketID));
             if(item)
             {
                 ui->processedByLabel2->setText(Global::i()->users().value(item->processedBy()));

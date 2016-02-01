@@ -10,6 +10,11 @@ TicketItem::TicketItem()
 
 }
 
+TicketItem::~TicketItem()
+{
+
+}
+
 QVariant TicketItem::data(int column, int role) const
 {
     if(role == Qt::DisplayRole)

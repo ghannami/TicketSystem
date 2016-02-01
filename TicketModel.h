@@ -16,9 +16,9 @@ public:
     virtual ~TicketModel();
 
     QVariant data ( const QModelIndex & index, int role = Qt::DisplayRole ) const;
-    QVariant data ( TicketItem * item, int column, int role = Qt::DisplayRole ) const;
+    QVariant data (std::shared_ptr<TicketItem> item, int column, int role = Qt::DisplayRole ) const;
     bool setData ( const QModelIndex & index, const QVariant & value, int role = Qt::EditRole );
-    bool setData (TicketItem * item, int column, const QVariant & value, int role = Qt::EditRole );
+    bool setData (std::shared_ptr<TicketItem> item, int column, const QVariant & value, int role = Qt::EditRole );
 
     Qt::ItemFlags flags(const QModelIndex &index) const;
     QVariant headerData(int section, Qt::Orientation orientation,
@@ -29,9 +29,9 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
 
-    TicketItem *item(QModelIndex index) const;
-    void addItem(TicketItem *child);
-    void removeItem(TicketItem *item);
+    std::shared_ptr<TicketItem> item(QModelIndex index) const;
+    void addItem(std::shared_ptr<TicketItem> child);
+    void removeItem(std::shared_ptr<TicketItem>item);
 
     QModelIndex parent(const QModelIndex &index) const;
 
@@ -41,7 +41,7 @@ public:
     QModelIndex index(int ticketID) const;
 
 private:
-    QList<TicketItem *> m_items;
+    QList<std::shared_ptr<TicketItem>> m_items;
     QStringList m_hHeaders;     /// Horizontal Header Liste
     std::shared_ptr<FilterObject> m_filterObject;
 };
