@@ -1,6 +1,7 @@
 #include "NewPTask.h"
 #include "ui_NewPTask.h"
 #include "PTaskItemData.h"
+#include
 
 NewPTask::NewPTask(QWidget *parent) :
     QDialog(parent),
@@ -9,6 +10,15 @@ NewPTask::NewPTask(QWidget *parent) :
     ui->setupUi(this);
     connect(ui->save, SIGNAL(clicked(bool)), this, SLOT(onSave()));
     connect(ui->abort, SIGNAL(clicked(bool)), this, SLOT(close()));
+
+    QMapIterator<int, QString>mip(Global::i()->projects());
+    int i = 0;
+    while(mip.hasNext())
+    {
+        mip.next();
+        ui->project->insertItem (i++, mip.value(),mip.key());
+    }
+
 }
 
 NewPTask::~NewPTask()
