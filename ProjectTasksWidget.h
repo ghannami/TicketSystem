@@ -20,7 +20,13 @@ public:
 
 protected slots:
     void refreshModel();
+    void onPrjSelectionChanged(const QModelIndex &curr, const QModelIndex &prev);
+    void onTaskSelectionChanged(const QModelIndex &curr, const QModelIndex &prev);
+    void onSaveTask();
+    void updateEditWidgets();
 
+protected:
+    void resizeDateColumns(int width);
 private:
     Ui::ProjectTasksWidget *ui;
     TreeModel *m_projectsModel;

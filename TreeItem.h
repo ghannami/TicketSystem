@@ -5,12 +5,15 @@
 #include <QList>
 #include <QVariant>
 #include <QVector>
+#include <QPersistentModelIndex>
 
 class TreeItemData;
 class TreeModel;
 
-class TreeItem
+class TreeItem : public QObject
 {
+    Q_OBJECT
+
     friend class TreeModel;
 
 public:
@@ -30,13 +33,23 @@ public:
     TreeItem *parent();
     TreeModel * model();
     void setModel(TreeModel * model);
-    Qt::ItemFlags flags();
+    Qt::ItemFlags flags(const QModelIndex &index);
     int position();   /// Die Position des Items bei seinem Parent
     TreeItemData * itemData();
+
+signals:
+    void layoutChanged(const QList<QPersistentModelIndex> &parents = QList<QPersistentModelIndex>(), QAbstractItemModel::LayoutChangeHint hint = QAbstractItemModel::NoLayoutChangeHint);
+    void layoutAboutToBeChanged(const QList<QPersistentModelIndex> &parents = QList<QPersistentModelIndex>(), QAbstractItemModel::LayoutChangeHint hint = QAbstractItemModel::NoLayoutChangeHint);
+
+    void beginInsertRows(const QModelIndex &parent, int first, int last);
+    void endInsertRows();
+
+    void beginRemoveRows(const QModelIndex &parent, int first, int last);
+    void endRemoveRows();
+
 private:
     /// Diese Funktionen dürfen nur vom Model benutzt werden,
     /// damit das Model Index für die neuen Elementen reservieren kann
-    void appendChild(TreeItem *child);
     void addChild(TreeItem * child, int position);
     void detachChild(TreeItem * child);
 

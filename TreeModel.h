@@ -12,6 +12,8 @@ class QUndoStack;
 
 class TreeModel : public QAbstractItemModel
 {
+    Q_OBJECT
+
     friend class AddTreeItemCommand;
     friend class RemoveTreeItemCommand;
 
@@ -56,6 +58,14 @@ public:
     /// daher muss dieser Wert eindeutig sein wie z. B ID
 
     QUndoStack *undoStack() const;
+    void updateLayout();
+
+protected slots:
+    void onBeginInsertRows(const QModelIndex &parent, int first, int last);
+    void onEndInsertRows();
+
+    void onBeginRemoveRows(const QModelIndex &parent, int first, int last);
+    void onEndRemoveRows();
 
 protected:
     void insertItem(TreeItem *child, TreeItem *parentItem, int position);

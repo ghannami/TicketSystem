@@ -10,8 +10,7 @@ public:
     QVariant data(int column, int role);
 
     virtual int columnCount() = 0;
-    void setFlags(Qt::ItemFlags itemFlags);
-    Qt::ItemFlags flags();
+    virtual Qt::ItemFlags flags(const QModelIndex &index);
 
 protected:
     /*!
@@ -32,7 +31,6 @@ protected:
 
 private:
     QMap<QPair<int, int>, QVariant> m_additionalData;   /// < <column, role>, value> für zusätzliche roles ausser EditRole und DisplayRole
-    Qt::ItemFlags m_itemFlags;
 };
 
 #endif // TREEITEMDATA_H

@@ -38,6 +38,14 @@ void TreeModel::setRoot(TreeItem *root)
     setRootView(m_rootItem);
     if(m_columnCount == 0)
         m_columnCount = m_rootItem->columnCount();
+    connect(m_rootItem, SIGNAL(layoutAboutToBeChanged(QList<QPersistentModelIndex>,QAbstractItemModel::LayoutChangeHint)),
+            this, SIGNAL(layoutAboutToBeChanged(QList<QPersistentModelIndex>,QAbstractItemModel::LayoutChangeHint)));
+    connect(m_rootItem, SIGNAL(layoutChanged(QList<QPersistentModelIndex>,QAbstractItemModel::LayoutChangeHint)),
+            this, SIGNAL(layoutChanged(QList<QPersistentModelIndex>,QAbstractItemModel::LayoutChangeHint)));
+    connect(m_rootItem, SIGNAL(beginInsertRows(QModelIndex,int,int)), this, SLOT(onBeginInsertRows(QModelIndex,int,int)));
+    connect(m_rootItem, SIGNAL(beginRemoveRows(QModelIndex,int,int)), this, SLOT(onBeginRemoveRows(QModelIndex,int,int)));
+    connect(m_rootItem, SIGNAL(endInsertRows()), this, SLOT(onEndInsertRows()));
+    connect(m_rootItem, SIGNAL(endRemoveRows()), this, SLOT(onEndRemoveRows()));
 }
 
 TreeItem *TreeModel::rootItem()
@@ -104,11 +112,11 @@ void TreeModel::insertItem(TreeItem *child, TreeItem *parentItem, int position)
         qWarning()<<"TreeModel::addItem der parent ist ungueltig";
         return;
     }
-    layoutAboutToBeChanged();
-    beginInsertRows(index(parentItem), position, position);
+//    emit layoutAboutToBeChanged();
+//    beginInsertRows(index(parentItem), position, position);
     parentItem->addChild(child, position);
-    endInsertRows();
-    layoutChanged();
+//    endInsertRows();
+//    emit layoutChanged();
 }
 
 void TreeModel::detachItem(TreeItem *treeItem, TreeItem *parentItem)
@@ -118,12 +126,9 @@ void TreeModel::detachItem(TreeItem *treeItem, TreeItem *parentItem)
 
     if(!index(treeItem).isValid())
         return;
-
-    layoutAboutToBeChanged();
-    beginRemoveRows(index(parentItem), treeItem->position(), treeItem->position());
+    //beginRemoveRows(index(parentItem), treeItem->position(), treeItem->position());
     parentItem->detachChild(treeItem);
-    endRemoveRows();
-    layoutChanged();
+    //endRemoveRows();
 }
 
 QUndoStack *TreeModel::undoStack() const
@@ -131,15 +136,45 @@ QUndoStack *TreeModel::undoStack() const
     return m_undoStack;
 }
 
+void TreeModel::updateLayout()
+{
+    emit layoutAboutToBeChanged();
+    emit layoutChanged();
+}
+
+
+
+void TreeModel::onBeginInsertRows(const QModelIndex &parent, int first, int last)
+{
+    beginInsertRows(parent, first, last);
+}
+
+void TreeModel::onEndInsertRows()
+{
+    endInsertRows();
+}
+
+void TreeModel::onBeginRemoveRows(const QModelIndex &parent, int first, int last)
+{
+    beginRemoveRows(parent, first, last);
+}
+
+void TreeModel::onEndRemoveRows()
+{
+    endRemoveRows();
+}
+
 void TreeModel::clearModel()
 {
+    beginResetModel();
+    setRootView(m_rootItem);
     /// löscht alle Unterelemente von m_rootItem
     /// die einzelne TreeItem löschen wiederum ihre Children im Destruktor
     foreach(TreeItem * child, m_rootItem->childItems())
     {
         deleteItem(child);
     }
-    setRootView(m_rootItem);
+    emit endResetModel();
 }
 
 void TreeModel::changeParent(TreeItem *item, TreeItem * newParent, int position)
@@ -167,7 +202,6 @@ void TreeModel::setHeaders(QStringList headers, Qt::Orientation orientation)
 void TreeModel::setColumnCount(int count)
 {
     m_columnCount = count;
-
 }
 /*!
  * \brief TreeModel::findItem sucht nach einem bestimmten element.
@@ -251,7 +285,7 @@ Qt::ItemFlags TreeModel::flags(const QModelIndex &index) const
     if (!index.isValid())
         return 0;
 
-    return item(index)->flags();
+    return item(index)->flags(index);
 }
 
 QVariant TreeModel::headerData(int section, Qt::Orientation orientation,

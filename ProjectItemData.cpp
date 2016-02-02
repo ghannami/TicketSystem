@@ -3,7 +3,7 @@
 ProjectItemData::ProjectItemData(const QSqlRecord &record):
     m_record(record)
 {
-    setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
+
 }
 
 int ProjectItemData::columnCount()

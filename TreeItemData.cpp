@@ -11,7 +11,6 @@ void TreeItemData::setData(int column, const QVariant &value, int role)
         pair.second = role;
         m_additionalData.insert(pair, value);
     }
-    setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
 }
 
 QVariant TreeItemData::data(int column, int role)
@@ -27,12 +26,8 @@ QVariant TreeItemData::data(int column, int role)
     return v;
 }
 
-void TreeItemData::setFlags(Qt::ItemFlags itemFlags)
-{
-    m_itemFlags = itemFlags;
-}
 
-Qt::ItemFlags TreeItemData::flags()
+Qt::ItemFlags TreeItemData::flags(const QModelIndex &index)
 {
-    return m_itemFlags;
+    return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }

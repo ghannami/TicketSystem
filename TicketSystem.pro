@@ -40,7 +40,9 @@ SOURCES += main.cpp\
     AddTreeItemCommand.cpp \
     RemoveTreeItemCommand.cpp \
     ProjectItemData.cpp \
-    PTaskItemData.cpp
+    PTaskItemData.cpp \
+    TaskGanttDelegate.cpp \
+    NewPTask.cpp
 
 HEADERS  += MainWindow.h \
     TicketModel.h \
@@ -59,14 +61,17 @@ HEADERS  += MainWindow.h \
     AddTreeItemCommand.h \
     RemoveTreeItemCommand.h \
     ProjectItemData.h \
-    PTaskItemData.h
+    PTaskItemData.h \
+    TaskGanttDelegate.h \
+    NewPTask.h
 
 FORMS    += mainwindow.ui \
     NewTicket.ui \
     LoginWidget.ui \
     TicketDetails.ui \
     TicketsWidget.ui \
-    ProjectTasksWidget.ui
+    ProjectTasksWidget.ui \
+    NewPTask.ui
 
 RESOURCES += \
     rsc.qrc
