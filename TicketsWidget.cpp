@@ -62,7 +62,8 @@ TicketsWidget::TicketsWidget(QWidget *parent) :
 
     connect(ui->ticketView->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), this, SLOT(onSelectionChanged(QModelIndex, QModelIndex)));
     connect(m_ticketDetails, SIGNAL(changed()), this, SLOT(updateModel()));
-
+    QPixmap p(":/icon/icons/clipboard.png");
+    ui->logoLabel->setPixmap(p.scaledToHeight(84, Qt::SmoothTransformation));
 }
 
 TicketsWidget::~TicketsWidget()
@@ -163,7 +164,7 @@ void TicketsWidget::setupeBoxes()
     }
 
     i = 1;
-    mip = QMapIterator<int, QString>(Global::i()->types());
+    mip = QMapIterator<int, QString>(Global::i()->ticketTypes());
     while(mip.hasNext())
     {
         mip.next();

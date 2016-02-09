@@ -125,6 +125,7 @@ QModelIndex TicketModel::parent(const QModelIndex &index) const
 void TicketModel::updateModel()
 {
     //layoutAboutToBeChanged();
+    beginResetModel();
     m_items.clear();
 
     QMap<int, int> unread;
@@ -168,6 +169,7 @@ void TicketModel::updateModel()
         addItem(std::shared_ptr<TicketItem>(item));
     }
     //layoutChanged();
+    endResetModel();
 }
 
 std::shared_ptr<FilterObject> TicketModel::filterObject() const

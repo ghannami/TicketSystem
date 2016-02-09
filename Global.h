@@ -27,11 +27,16 @@ public:
 
     QMap<int, QString> projects(bool reload = false);
 
-    QMap<int, QString> types(bool reload = false);
+    QMap<int, QString> ticketTypes(bool reload = false);
 
     QMap<int, QString> categories(bool reload = false);
 
     QMap<int, QString> prioritys(bool reload = false);
+
+    QMap<int, QString> taskTypes(bool reload = false);
+
+    QString appPath();
+    QString settingsFile();
 
 private:
     static Global *m_instance;
@@ -41,7 +46,8 @@ private:
     QMap<int, QString> m_stats;
     QMap<int, QString> m_users;
     QMap<int, QString> m_projects;
-    QMap<int, QString> m_types;
+    QMap<int, QString> m_ticketTypes;
+    QMap<int, QString> m_taskeTypes;
     QMap<int, QString> m_categories;
     QMap<int, QString> m_prioritys;
 };

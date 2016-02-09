@@ -6,19 +6,23 @@
 #include <QDebug>
 #include <QSqlError>
 
-PTaskItemData::PTaskItemData(QSqlRecord record, DateMode dateMode):
-    m_record(record), m_dateMode(dateMode)
+
+PTaskItemData::PTaskItemData(QSqlRecord rec, DateMode dateMode):
+    AbstractTaskData(rec, dateMode)
 {
-    setTaskStart(m_record.value("task_start").toDate());
-    setTaskEnd(m_record.value("task_end").toDate());
-    setTaskName(m_record.value("name").toString());
-    setID(m_record.value("id").toInt());
-    setProjectId(m_record.value("project_id").toInt());
-    setOrder(m_record.value("task_order").toInt());
+    setDate(record().value("date").toDate());
+    setTaskStart(record().value("task_start").toDate());
+    setTaskEnd(record().value("task_end").toDate());
+    setTaskName(record().value("name").toString());
+    setID(record().value("id").toInt());
+    setProjectId(record().value("project_id").toInt());
+    setTaskType(record().value("project_task_type").toInt());
+    setOrder(record().value("task_order").toInt());
+    setPercent(record().value("percent").toInt());
+    setDescription(record().value("description").toString());
 }
 
-PTaskItemData::PTaskItemData(PTaskItemData::DateMode dateMode):
-    m_dateMode(dateMode), m_ID(-1)
+PTaskItemData::PTaskItemData(PTaskItemData::DateMode dateMode)
 {
 
 }
@@ -43,9 +47,9 @@ QVariant PTaskItemData::value(int column, int role)
     if(role == Qt::DisplayRole)
     {
         if(column == 0)
-            return m_taskName;
-        int startWeek = m_taskStart.weekNumber();
-        int endWeek = m_taskEnd.weekNumber();
+            return taskName();
+        int startWeek = taskStart().weekNumber();
+        int endWeek = taskEnd().weekNumber();
         if(column >= startWeek && column <= endWeek)
         {
             return 7;
@@ -54,6 +58,26 @@ QVariant PTaskItemData::value(int column, int role)
             return 0;
     }
     return QVariant();
+}
+
+QDate PTaskItemData::date() const
+{
+    return m_date;
+}
+
+void PTaskItemData::setDate(const QDate &date)
+{
+    m_date = date;
+}
+
+QString PTaskItemData::description() const
+{
+    return m_description;
+}
+
+void PTaskItemData::setDescription(const QString &description)
+{
+    m_description = description;
 }
 
 int PTaskItemData::order() const
@@ -76,72 +100,42 @@ void PTaskItemData::setProjectId(int projectId)
     m_projectId = projectId;
 }
 
-int PTaskItemData::ID() const
-{
-    return m_ID;
-}
-
-void PTaskItemData::setID(int ID)
-{
-    m_ID = ID;
-}
-
 void PTaskItemData::saveToDB()
 {
-    if(m_ID < 0)
+    if(ID() < 0)
     {
         QSqlQuery query(Global::i()->db());
-        query.prepare("INSERT INTO project_task (name, project_id, task_start, task_end, order) "
-                      "VALUES (:name, :project_id, :task_start, :task_end, :order)");
+        query.prepare("INSERT INTO project_task (name, project_id, date, project_task_type, task_start, task_end, task_order, percent, description) "
+                      "VALUES (:name, :project_id, :date, :project_task_type, :task_start, :task_end, :order, :percent, :description)");
         query.bindValue(":name", taskName());
         query.bindValue(":project_id", projectId());
+        query.bindValue(":date", date());
+        query.bindValue(":project_task_type", taskType());
         query.bindValue(":task_start", taskStart());
         query.bindValue(":task_end", taskEnd());
         query.bindValue(":order", order());
+        query.bindValue(":percent", percent());
+        query.bindValue(":description", description());
         if(!query.exec())
             qDebug() << query.lastError().text();
     }
     else
     {
-        QString q = QString("UPDATE project_task set name = '%1', project_id = %2, task_start = '%3', task_end = '%4', project_task.order =%5 WHERE id = %6")
-                .arg(taskName()).arg(projectId()).arg(taskStart().toString("yyyy-MM-dd")).arg(taskEnd().toString("yyyy-MM-dd")).arg(order()).arg(ID());
+        QString q = QString("UPDATE project_task set name = '%1', project_id = %2, task_start = '%3', task_end = '%4', task_order =%5, percent = %6, description = '%7', date = '%8' WHERE id = %9")
+                .arg(taskName()).arg(projectId()).arg(taskStart().toString("yyyy-MM-dd")).arg(taskEnd().toString("yyyy-MM-dd")).arg(order()).arg(percent()).arg(description()).arg(date().toString("yyyy-MM-dd")).arg(ID());
         QSqlQuery query(q , Global::i()->db());
         if(!query.exec())
             qDebug() << query.lastError().text();
     }
 }
 
-QString PTaskItemData::taskName() const
+void PTaskItemData::removeFromDB()
 {
-    return m_taskName;
-}
-
-void PTaskItemData::setTaskName(const QString &taskName)
-{
-    m_taskName = taskName;
-}
-
-QDate PTaskItemData::taskEnd() const
-{
-    return m_taskEnd;
-}
-
-void PTaskItemData::setTaskEnd(const QDate &taskEnd)
-{
-    m_taskEnd = taskEnd;
-}
-
-QDate PTaskItemData::taskStart() const
-{
-    return m_taskStart;
-}
-
-void PTaskItemData::setTaskStart(const QDate &taskStart)
-{
-    m_taskStart = taskStart;
-}
-
-QSqlRecord PTaskItemData::record() const
-{
-    return m_record;
+    if(ID() > 0)
+    {
+        QString q = QString("DELETE FROM project_task WHERE id = %1").arg(ID());
+        QSqlQuery query(q , Global::i()->db());
+        if(!query.exec())
+            qDebug() << query.lastError().text();
+    }
 }

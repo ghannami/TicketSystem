@@ -14,7 +14,7 @@
    <string>TicketSystem v 1.0</string>
   </property>
   <property name="windowIcon">
-   <iconset>
+   <iconset resource="rsc.qrc">
     <normaloff>:/icon/ticketx64</normaloff>:/icon/ticketx64</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
@@ -57,7 +57,9 @@
     <property name="title">
      <string>Neu</string>
     </property>
+    <addaction name="actionProjekt"/>
     <addaction name="actionTicket"/>
+    <addaction name="actionTask"/>
    </widget>
    <addaction name="menuNeu"/>
   </widget>
@@ -71,12 +73,36 @@
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionTicket">
+   <property name="icon">
+    <iconset resource="rsc.qrc">
+     <normaloff>:/icon/icons/clipboard.png</normaloff>:/icon/icons/clipboard.png</iconset>
+   </property>
    <property name="text">
     <string>Ticket</string>
    </property>
   </action>
+  <action name="actionTask">
+   <property name="icon">
+    <iconset resource="rsc.qrc">
+     <normaloff>:/icon/icons/clock.png</normaloff>:/icon/icons/clock.png</iconset>
+   </property>
+   <property name="text">
+    <string>Task</string>
+   </property>
+  </action>
+  <action name="actionProjekt">
+   <property name="icon">
+    <iconset resource="rsc.qrc">
+     <normaloff>:/icon/icons/graph.png</normaloff>:/icon/icons/graph.png</iconset>
+   </property>
+   <property name="text">
+    <string>Projekt</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="rsc.qrc"/>
+ </resources>
  <connections/>
 </ui>

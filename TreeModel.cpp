@@ -172,8 +172,9 @@ void TreeModel::clearModel()
     /// die einzelne TreeItem löschen wiederum ihre Children im Destruktor
     foreach(TreeItem * child, m_rootItem->childItems())
     {
-        deleteItem(child);
+        delete child;
     }
+    m_rootItem->m_childItems.clear();
     emit endResetModel();
 }
 

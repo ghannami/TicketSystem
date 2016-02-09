@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="rsc.qrc">
-    <normaloff>:/icon/ticketx64</normaloff>:/icon/ticketx64</iconset>
+    <normaloff>:/icon/icons/clipboard.png</normaloff>:/icon/icons/clipboard.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>

@@ -27,8 +27,6 @@ protected slots:
     void onFilterChanged();
     void newTicket();
     void onSelectionChanged(const QModelIndex &current, const QModelIndex &previous);
-
-protected:
     void setupeBoxes();
 
 private:

@@ -77,13 +77,6 @@ int TreeItem::columnCount() const
 
 QVariant TreeItem::data(int column, int role) const
 {
-//    /// Spezielle Daten die versteckt sind, werden nur zur Hilfe benutzt wie etwa <RecordId> für einen Antrag in der Datenbank
-//    if(role ==  Qt::UserRole)
-//    {
-//        if(!m_userRoleData.isEmpty())
-//            return m_userRoleData.at(column);
-//    }
-
     if(m_treeDataItem)
         return m_treeDataItem->data(column, role);
 
@@ -92,22 +85,6 @@ QVariant TreeItem::data(int column, int role) const
 
 void TreeItem::setData(int column, QVariant value, int role)
 {
-    /// Spezielle Daten die versteckt sind, werden nur zur Hilfe benutzt wie etwa <RecordId> für einen Antrag in der Datenbank
-//    if(role ==  Qt::UserRole)
-//        m_userRoleData.insert(column, value);
-//    /// Daten für Display- und EditRole
-//    else if(role == Qt::EditRole)
-//    {
-//        if(m_treeDataItem)
-//           m_treeDataItem->setValue(column, value.toString());
-//    }
-//    else{
-//        QPair<int,int> pair;
-//        pair.first = column;
-//        pair.second = role;
-//        m_additionalData.insert(pair, value);
-//    }
-
     if(m_treeDataItem)
        m_treeDataItem->setData(column, value, role);
 

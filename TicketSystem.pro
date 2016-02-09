@@ -42,7 +42,10 @@ SOURCES += main.cpp\
     ProjectItemData.cpp \
     PTaskItemData.cpp \
     TaskGanttDelegate.cpp \
-    NewPTask.cpp
+    NewPTask.cpp \
+    NewProject.cpp \
+    AbstractTaskData.cpp \
+    TicketNotifier.cpp
 
 HEADERS  += MainWindow.h \
     TicketModel.h \
@@ -63,7 +66,10 @@ HEADERS  += MainWindow.h \
     ProjectItemData.h \
     PTaskItemData.h \
     TaskGanttDelegate.h \
-    NewPTask.h
+    NewPTask.h \
+    NewProject.h \
+    AbstractTaskData.h \
+    TicketNotifier.h
 
 FORMS    += mainwindow.ui \
     NewTicket.ui \
@@ -71,7 +77,8 @@ FORMS    += mainwindow.ui \
     TicketDetails.ui \
     TicketsWidget.ui \
     ProjectTasksWidget.ui \
-    NewPTask.ui
+    NewPTask.ui \
+    NewProject.ui
 
 RESOURCES += \
     rsc.qrc

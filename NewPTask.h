@@ -2,6 +2,7 @@
 #define NEWPTASK_H
 
 #include <QDialog>
+#include <QDate>
 
 namespace Ui {
 class NewPTask;
@@ -17,6 +18,7 @@ public:
 
 protected slots:
     void onSave();
+    void onStartDateChanged(const QDate &date);
 
 private:
     Ui::NewPTask *ui;

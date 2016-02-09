@@ -25,6 +25,12 @@ NewTicket::~NewTicket()
 
 void NewTicket::onSave()
 {
+    if(ui->title->text().isEmpty())
+    {
+        ui->title->setStyleSheet("QLineEdit#title{background-color:rgb(255,0,0,100)}");
+        return;
+    }
+
     QSqlQuery query(Global::i()->db());
     query.prepare("INSERT INTO ticket (type, from_user, to_user, project, state, categorie, priority, title, date) "
                   "VALUES (:type, :from_user, :to_user, :project, :state, :categorie, :priority, :title, :date)");
@@ -80,7 +86,7 @@ void NewTicket::setupeBoxes()
     }
 
     i = 0;
-    mip = QMapIterator<int, QString>(Global::i()->types());
+    mip = QMapIterator<int, QString>(Global::i()->ticketTypes());
     while(mip.hasNext())
     {
         mip.next();

@@ -5,6 +5,10 @@
 #include <QVariant>
 #include <QFile>
 #include <QDomDocument>
+#include <QMessageBox>
+#include <QSqlError>
+#include <QDir>
+#include <QApplication>
 
 Global *Global::m_instance = 0;
 
@@ -13,10 +17,12 @@ Global::Global()
     connectDB();
 
     users(true);
-    types(true);
+    ticketTypes(true);
     projects(true);
     stats(true);
     categories(true);
+    taskTypes(true);
+    prioritys(true);
 }
 
 Global *Global::instance()
@@ -34,6 +40,9 @@ Global *Global::i()
 bool Global::login()
 {
     LoginWidget w;
+    if(w.loggedIn())
+        return true;
+
     if(w.exec() == QDialog::Accepted)
     {
         return true;
@@ -49,12 +58,23 @@ QString Global::userName() const
 
 void Global::connectDB()
 {
-    QDomDocument doc("DBSettings");
-    QFile file("settings.xml");
-    if (!file.open(QIODevice::ReadOnly))
+    if(m_db.open())
         return;
+    QMessageBox msg;
+
+    QDomDocument doc("DBSettings");
+    QFile file(settingsFile());
+
+    if (!file.open(QIODevice::ReadOnly))
+    {
+        msg.setText(qApp->applicationDirPath());
+        msg.exec();
+        return;
+    }
     if (!doc.setContent(&file)) {
         file.close();
+        msg.setText("!doc.setContent(&file)");
+        msg.exec();
         return;
     }
     file.close();
@@ -66,7 +86,11 @@ void Global::connectDB()
     m_db.setUserName(root.firstChildElement("user").text());
     m_db.setPassword(root.firstChildElement("password").text());
     m_db.setPort(root.firstChildElement("port").text().toInt());
-    m_db.open();
+    if(!m_db.open())
+    {
+        msg.setText(m_db.lastError().text());
+        msg.exec();
+    }
 }
 
 QSqlDatabase Global::db()
@@ -126,18 +150,43 @@ QMap<int, QString> Global::projects(bool reload)
     return m_projects;
 }
 
-QMap<int, QString> Global::types(bool reload)
+QMap<int, QString> Global::ticketTypes(bool reload)
 {
     if(reload)
     {
-        m_types.clear();
+        m_ticketTypes.clear();
         QSqlQuery query("SELECT * FROM tickettype order by id asc", db());
         while(query.next())
         {
-            m_types.insert(query.value("id").toInt(), query.value("name").toString());
+            m_ticketTypes.insert(query.value("id").toInt(), query.value("name").toString());
         }
     }
-    return m_types;
+    return m_ticketTypes;
+}
+
+QMap<int, QString> Global::taskTypes(bool reload)
+{
+    if(reload)
+    {
+        m_taskeTypes.clear();
+        QSqlQuery query("SELECT * FROM project_task_type order by id asc", db());
+        while(query.next())
+        {
+            m_taskeTypes.insert(query.value("id").toInt(), query.value("name").toString());
+        }
+    }
+    return m_taskeTypes;
+}
+
+QString Global::appPath()
+{
+    return qApp->applicationDirPath();
+}
+
+QString Global::settingsFile()
+{
+    QDir dir(appPath());
+    return dir.filePath("settings.xml");
 }
 
 QMap<int, QString> Global::categories(bool reload)

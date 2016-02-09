@@ -20,18 +20,29 @@ public:
 
 protected slots:
     void refreshModel();
-    void onPrjSelectionChanged(const QModelIndex &curr, const QModelIndex &prev);
+//    void onPrjSelectionChanged(const QModelIndex &curr, const QModelIndex &prev);
     void onTaskSelectionChanged(const QModelIndex &curr, const QModelIndex &prev);
     void onSaveTask();
+    void removeTask();
+
     void updateEditWidgets();
+    void newTask();
+    void newProject();
+
+    void updateItem(bool save = false);
+    void onValuesChanged();
+
+signals:
+    void projectAdded();
 
 protected:
     void resizeDateColumns(int width);
 private:
     Ui::ProjectTasksWidget *ui;
-    TreeModel *m_projectsModel;
+//    TreeModel *m_projectsModel;
     TreeModel *m_tasksModel;
-    TreeItem *m_rootItem;
+//    TreeItem *m_rootItem;
+    bool m_blockEmitChanges;
 };
 
 #endif // PROJECTTASKSWIDGET_H
