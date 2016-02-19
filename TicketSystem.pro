@@ -45,7 +45,13 @@ SOURCES += main.cpp\
     NewPTask.cpp \
     NewProject.cpp \
     AbstractTaskData.cpp \
-    TicketNotifier.cpp
+    TicketNotifier.cpp \
+    SystemsWidget.cpp \
+    SystemItemData.cpp \
+    NewSystemUnit.cpp \
+    SystemUnitData.cpp \
+    SystemUnitCatData.cpp \
+    SystemUnitDeatils.cpp
 
 HEADERS  += MainWindow.h \
     TicketModel.h \
@@ -69,7 +75,13 @@ HEADERS  += MainWindow.h \
     NewPTask.h \
     NewProject.h \
     AbstractTaskData.h \
-    TicketNotifier.h
+    TicketNotifier.h \
+    SystemsWidget.h \
+    SystemItemData.h \
+    NewSystemUnit.h \
+    SystemUnitData.h \
+    SystemUnitCatData.h \
+    SystemUnitDeatils.h
 
 FORMS    += mainwindow.ui \
     NewTicket.ui \
@@ -78,7 +90,10 @@ FORMS    += mainwindow.ui \
     TicketsWidget.ui \
     ProjectTasksWidget.ui \
     NewPTask.ui \
-    NewProject.ui
+    NewProject.ui \
+    SystemsWidget.ui \
+    NewSystemUnit.ui \
+    SystemUnitDeatils.ui
 
 RESOURCES += \
     rsc.qrc

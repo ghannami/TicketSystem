@@ -8,8 +8,6 @@ class ProjectItemData : public AbstractTaskData
 public:
     ProjectItemData(const QSqlRecord &record);
     ProjectItemData();
-    virtual int columnCount() override;
-
     virtual void saveToDB();
 protected:
     virtual bool setValue(int column, const QVariant & value, int role) override;

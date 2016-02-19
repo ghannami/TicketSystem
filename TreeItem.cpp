@@ -68,13 +68,6 @@ int TreeItem::childCount() const
     return m_childItems.count();
 }
 
-int TreeItem::columnCount() const
-{
-    if(m_treeDataItem)
-        return m_treeDataItem->columnCount();
-    return 0;
-}
-
 QVariant TreeItem::data(int column, int role) const
 {
     if(m_treeDataItem)

@@ -35,6 +35,10 @@ public:
 
     QMap<int, QString> taskTypes(bool reload = false);
 
+    QMap<int, QString> systems(bool reload = false);
+
+    QMap<int, QString> systemUnitCategories(int systemId);
+
     QString appPath();
     QString settingsFile();
 
@@ -50,6 +54,8 @@ private:
     QMap<int, QString> m_taskeTypes;
     QMap<int, QString> m_categories;
     QMap<int, QString> m_prioritys;
+    QMap<int, QString> m_systems;
+    QMap<int, QString> m_systemsUnitCategories;
 };
 
 #endif // GLOBAL_H

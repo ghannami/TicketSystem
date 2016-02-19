@@ -8,8 +8,6 @@ class TreeItemData
 public:
     void setData(int column, const QVariant & value, int role);
     QVariant data(int column, int role);
-
-    virtual int columnCount() = 0;
     virtual Qt::ItemFlags flags(const QModelIndex &index);
 
 protected:

@@ -22,13 +22,7 @@ TreeModel::~TreeModel()
 
 int TreeModel::columnCount(const QModelIndex &parent) const
 {
-    if(m_columnCount != 0)
-        return m_columnCount;
-
-    if (parent.isValid())
-        return static_cast<TreeItem*>(parent.internalPointer())->columnCount();
-    else
-        return rootItemView()->columnCount();
+    return m_columnCount;
 }
 
 void TreeModel::setRoot(TreeItem *root)
@@ -36,8 +30,6 @@ void TreeModel::setRoot(TreeItem *root)
     m_rootItem = root;
     m_rootItem->setModel(this);
     setRootView(m_rootItem);
-    if(m_columnCount == 0)
-        m_columnCount = m_rootItem->columnCount();
     connect(m_rootItem, SIGNAL(layoutAboutToBeChanged(QList<QPersistentModelIndex>,QAbstractItemModel::LayoutChangeHint)),
             this, SIGNAL(layoutAboutToBeChanged(QList<QPersistentModelIndex>,QAbstractItemModel::LayoutChangeHint)));
     connect(m_rootItem, SIGNAL(layoutChanged(QList<QPersistentModelIndex>,QAbstractItemModel::LayoutChangeHint)),

@@ -5,6 +5,7 @@
 #include <QtWidgets>
 #include "TicketNotifier.h"
 #include "Global.h"
+#include "SystemsWidget.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -19,11 +20,11 @@ MainWindow::MainWindow(QWidget *parent) :
     QHBoxLayout *tLay = new QHBoxLayout();
     tLay->addWidget(m_tickets);
     ui->tickets->setLayout(tLay);
-    connect(ui->actionTicket, SIGNAL(triggered(bool)), m_tickets, SLOT(newTicket()));
+//    connect(ui->actionTicket, SIGNAL(triggered(bool)), m_tickets, SLOT(newTicket()));
 
     m_tasks = new ProjectTasksWidget();
-    connect(ui->actionTask, SIGNAL(triggered(bool)), m_tasks, SLOT(newTask()));
-    connect(ui->actionProjekt, SIGNAL(triggered(bool)), m_tasks, SLOT(newProject()));
+//    connect(ui->actionTask, SIGNAL(triggered(bool)), m_tasks, SLOT(newTask()));
+//    connect(ui->actionProjekt, SIGNAL(triggered(bool)), m_tasks, SLOT(newProject()));
     QHBoxLayout *pLay = new QHBoxLayout();
     pLay->addWidget(m_tasks);
     ui->projects->setLayout(pLay);
@@ -39,7 +40,17 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
 
+    SystemsWidget *sysWidget = new SystemsWidget();
+    QHBoxLayout *sLay = new QHBoxLayout();
+    sLay->addWidget(sysWidget);
+    ui->systems->setLayout(sLay);
+
     setStartWithSystem(true);
+
+    ui->mainToolBar->addAction(QIcon(":/icon/icons/graph.png"),tr("Neus Projekt"), m_tasks, SLOT(newProject()));
+    ui->mainToolBar->addAction(QIcon(":/icon/icons/clipboard.png"),tr("Neues Ticket"), m_tickets, SLOT(newTicket()));
+    ui->mainToolBar->addAction(QIcon(":/icon/icons/clock.png"),tr("Neuer Task"), m_tasks, SLOT(newTask()));
+    ui->mainToolBar->addAction(QIcon(":/icon/icons/file.png"),tr("Neuer Testfall"), sysWidget, SLOT(newSystemUnit()));
 }
 
 MainWindow::~MainWindow()

@@ -23,6 +23,7 @@ Global::Global()
     categories(true);
     taskTypes(true);
     prioritys(true);
+    systems(true);
 }
 
 Global *Global::instance()
@@ -176,6 +177,31 @@ QMap<int, QString> Global::taskTypes(bool reload)
         }
     }
     return m_taskeTypes;
+}
+
+QMap<int, QString> Global::systems(bool reload)
+{
+    if(reload)
+    {
+        m_systems.clear();
+        QSqlQuery query("SELECT * from system", db());
+        while(query.next())
+        {
+            m_systems.insert(query.value("id").toInt(), query.value("name").toString());
+        }
+    }
+    return m_systems;
+}
+
+QMap<int, QString> Global::systemUnitCategories(int systemId)
+{
+    m_systemsUnitCategories.clear();
+    QSqlQuery query("SELECT * FROM system_unit_categorie WHERE system = "+QString::number(systemId) + " order by position asc;", db());
+    while(query.next())
+    {
+        m_systemsUnitCategories.insert(query.value("id").toInt(), query.value("name").toString());
+    }
+    return m_systemsUnitCategories;
 }
 
 QString Global::appPath()

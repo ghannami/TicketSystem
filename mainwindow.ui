@@ -17,16 +17,30 @@
    <iconset resource="rsc.qrc">
     <normaloff>:/icon/ticketx64</normaloff>:/icon/ticketx64</iconset>
   </property>
+  <property name="toolButtonStyle">
+   <enum>Qt::ToolButtonTextBesideIcon</enum>
+  </property>
+  <property name="animated">
+   <bool>false</bool>
+  </property>
+  <property name="documentMode">
+   <bool>false</bool>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tickets">
        <attribute name="title">
         <string>Tickets</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="systems">
+       <attribute name="title">
+        <string>Systeme</string>
        </attribute>
       </widget>
       <widget class="QWidget" name="projects">
@@ -53,15 +67,6 @@
    <property name="nativeMenuBar">
     <bool>false</bool>
    </property>
-   <widget class="QMenu" name="menuNeu">
-    <property name="title">
-     <string>Neu</string>
-    </property>
-    <addaction name="actionProjekt"/>
-    <addaction name="actionTicket"/>
-    <addaction name="actionTask"/>
-   </widget>
-   <addaction name="menuNeu"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">

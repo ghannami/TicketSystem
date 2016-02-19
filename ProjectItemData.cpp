@@ -22,11 +22,6 @@ ProjectItemData::ProjectItemData():
 
 }
 
-int ProjectItemData::columnCount()
-{
-    return 1;
-}
-
 bool ProjectItemData::setValue(int column, const QVariant &value, int role)
 {
     return true;

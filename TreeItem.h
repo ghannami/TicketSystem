@@ -25,7 +25,6 @@ public:
 
     int childRow(TreeItem * child);
     int childCount() const;
-    int columnCount() const;
     QVariant data(int column, int role) const;
     void setData(int column, QVariant value, int role);
     int row() const;

@@ -10,7 +10,6 @@ public:
 
     PTaskItemData(QSqlRecord record, DateMode dateMode = WeekDate);
     PTaskItemData(DateMode dateMode = WeekDate);
-    virtual int columnCount() override;
     virtual Qt::ItemFlags flags(const QModelIndex &index);
 
     virtual void saveToDB();

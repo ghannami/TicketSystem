@@ -27,11 +27,6 @@ PTaskItemData::PTaskItemData(PTaskItemData::DateMode dateMode)
 
 }
 
-int PTaskItemData::columnCount()
-{
-    return 1;
-}
-
 Qt::ItemFlags PTaskItemData::flags(const QModelIndex &index)
 {
     return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
