@@ -136,11 +136,11 @@ void TicketModel::updateModel()
         unread.insert(unredQuery.value("ticket").toInt(), unredQuery.value("viewed").toInt());
     }
 
-    QString q   = "SELECT t.id as id, t.title as title, s.id as state, s.name as statename , t.date as date, ";
-    q           += "t.processed_by as processed_by, t.tested_by as tested_by, ";
-    q           += "user1.name as fromuser, user2.name as touser, prio.name as priorityname, t.type, pro.name as projectname, cat.name as categoriename ";
-    q           += "FROM ticket t, state s, user user1, user user2, priority prio, projects pro, categories cat ";
-    q           += "where t.state = s.id and user1.id = t.from_user and user2.id = t.to_user and prio.id = t.priority and pro.id = t.project and cat.id = t.categorie ";
+    QString q    = " SELECT t.id as id, t.title as title, s.id as state, s.name as statename , t.date as date, ";
+    q           += " t.processed_by as processed_by, t.tested_by as tested_by, ";
+    q           += " user1.name as fromuser, user2.name as touser, prio.name as priorityname, t.type, sys.id as systemversion, cat.name as categoriename ";
+    q           += " FROM ticket t, state s, user user1, user user2, priority prio, system_version sys, system_unit_categorie cat ";
+    q           += " where t.state = s.id and user1.id = t.from_user and user2.id = t.to_user and prio.id = t.priority and cat.id = t.unit_categorie and sys.id = t.system_version ";
     if(filterObject()->stateID() > 0)
         q+= " AND s.id = " +QString::number(filterObject()->stateID()) + " ";
     if(filterObject()->typeID() > 0)
@@ -149,10 +149,10 @@ void TicketModel::updateModel()
         q+= " AND t.to_user = " +QString::number(filterObject()->toUserID()) + " ";
     if(filterObject()->priorityID() > 0)
         q+= " AND t.priority = " +QString::number(filterObject()->priorityID()) + " ";
-    if(filterObject()->categorieID() > 0)
-        q+= " AND t.categorie = " +QString::number(filterObject()->categorieID()) + " ";
-    if(filterObject()->projectID() > 0)
-        q+= " AND t.project = " +QString::number(filterObject()->projectID()) + " ";
+    if(filterObject()->unitCategorieID() > 0)
+        q+= " AND t.unit_categorie = " +QString::number(filterObject()->unitCategorieID()) + " ";
+    if(filterObject()->systemVersionID() > 0)
+        q+= " AND t.system_version = " +QString::number(filterObject()->systemVersionID()) + " ";
 
     q           += "order by state asc, prio.number desc, t.date asc;";
 

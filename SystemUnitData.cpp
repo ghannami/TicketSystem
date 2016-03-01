@@ -10,6 +10,14 @@ SystemUnitData::SystemUnitData(const QSqlRecord &record):
     m_record(record)
 {
     m_state = 0;
+    m_id = -1;
+    m_unitTestId = -1;
+    m_systemId = -1;
+    m_versionId = -1;
+    m_systemVersionId = -1;
+    m_categorieId = -1;
+    m_position;
+    m_userId = -1;
     setRecord(m_record);
 }
 
@@ -33,9 +41,13 @@ QVariant SystemUnitData::value(int column, int role)
         case 0:
             return title();
         case 1:
-            return Global::i()->users().value(userId());
+            if(state() != 0)
+                return Global::i()->users().value(userId());
+            break;
         case 2:
-            return date();
+            if(state() != 0)
+                return date();
+            break;
         }
     }
     else if(role == Qt::BackgroundColorRole)
@@ -120,28 +132,39 @@ void SystemUnitData::saveToDB()
         if(!query.exec())
             qDebug() << query.lastError().text();
 
-        if(unitTestId() < 0)
+        if(state() > 0)
         {
-            QSqlQuery query(Global::i()->db());
-            query.prepare("INSERT INTO system_unit_test (system_version, system_unit, user, test_state, date) "
-                          "VALUES (:system_version, :system_unit, :user, :test_state, :date)");
-            query.bindValue(":system_version", systemVersionId());
-            query.bindValue(":system_unit", id());
-            query.bindValue(":user", userId());
-            query.bindValue(":test_state", state());
-            query.bindValue(":date", date());
+            if(unitTestId() < 0)
+            {
+                QSqlQuery query(Global::i()->db());
+                query.prepare("INSERT INTO system_unit_test (system_version, system_unit, user, test_state, date) "
+                              "VALUES (:system_version, :system_unit, :user, :test_state, :date)");
+                query.bindValue(":system_version", systemVersionId());
+                query.bindValue(":system_unit", id());
+                query.bindValue(":user", Global::i()->userID());
+                query.bindValue(":test_state", state());
+                query.bindValue(":date", QDate::currentDate());
 
-            if(!query.exec())
-                qDebug() << query.lastError().text();
+                if(!query.exec())
+                    qDebug() << query.lastError().text();
+            }
+            else
+            {
+                QString q = QString("UPDATE system_unit_test set user = '%1', test_state = '%2', date='%3' WHERE id = %4")
+                        .arg(Global::i()->userID()).arg(state()).arg(QDate::currentDate().toString("yyyy-MM-dd")).arg(unitTestId());
+                QSqlQuery query(q , Global::i()->db());
+                if(!query.exec())
+                    qDebug() << query.lastError().text();
+
+            }
         }
         else
         {
-            QString q = QString("UPDATE system_unit set user = '%1', test_state = '%2', date='%3' WHERE id = %4")
-                    .arg(userId()).arg(state()).arg(date().toString("yyyy-MM-dd")).arg(id());
+            QString q = QString("DELETE FROM system_unit_test WHERE id = %1")
+                    .arg(unitTestId());
             QSqlQuery query(q , Global::i()->db());
             if(!query.exec())
                 qDebug() << query.lastError().text();
-
         }
     }
 }

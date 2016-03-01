@@ -25,29 +25,6 @@
         <property name="horizontalSpacing">
          <number>12</number>
         </property>
-        <item row="0" column="5">
-         <widget class="QLabel" name="label_6">
-          <property name="text">
-           <string>Projekt</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QComboBox" name="stateBox"/>
-        </item>
-        <item row="1" column="4">
-         <widget class="QComboBox" name="moduleBox"/>
-        </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Status</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="5">
-         <widget class="QComboBox" name="projectBox"/>
-        </item>
         <item row="0" column="3">
          <widget class="QLabel" name="label_3">
           <property name="text">
@@ -78,120 +55,35 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="4">
+        <item row="0" column="5">
          <widget class="QLabel" name="label_5">
           <property name="text">
-           <string>Modul</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item>
-      <widget class="QGroupBox" name="groupBox_2">
-       <property name="title">
-        <string>Meine Tickets</string>
-       </property>
-       <layout class="QGridLayout" name="gridLayout_2">
-        <property name="horizontalSpacing">
-         <number>20</number>
-        </property>
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_7">
-          <property name="text">
-           <string>Offen</string>
+           <string>Kategorie</string>
           </property>
          </widget>
         </item>
         <item row="1" column="0">
-         <widget class="QLabel" name="label2">
-          <property name="text">
-           <string>Testen</string>
-          </property>
-         </widget>
+         <widget class="QComboBox" name="stateBox"/>
         </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label3">
-          <property name="text">
-           <string>Ungelesen</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QLabel" name="myOpen">
-          <property name="text">
-           <string>0</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QLabel" name="myTest">
-          <property name="text">
-           <string>0</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="QLabel" name="myUnread">
-          <property name="text">
-           <string>0</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item>
-      <widget class="QGroupBox" name="groupBox_3">
-       <property name="title">
-        <string>Alle Tickets</string>
-       </property>
-       <layout class="QGridLayout" name="gridLayout_3">
-        <property name="horizontalSpacing">
-         <number>20</number>
-        </property>
-        <item row="1" column="1">
-         <widget class="QLabel" name="allTest">
-          <property name="text">
-           <string>0</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QLabel" name="allOpen">
-          <property name="text">
-           <string>0</string>
-          </property>
-         </widget>
+        <item row="1" column="5">
+         <widget class="QComboBox" name="unitCategorieBox"/>
         </item>
         <item row="0" column="0">
-         <widget class="QLabel" name="label_8">
+         <widget class="QLabel" name="label">
           <property name="text">
-           <string>Offen</string>
+           <string>Status</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_9">
+        <item row="0" column="4">
+         <widget class="QLabel" name="label_6">
           <property name="text">
-           <string>Testen</string>
+           <string>System</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="1">
-         <widget class="QLabel" name="allUnread">
-          <property name="text">
-           <string>0</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_10">
-          <property name="text">
-           <string>Ungelesen</string>
-          </property>
-         </widget>
+        <item row="1" column="4">
+         <widget class="QComboBox" name="systemBox"/>
         </item>
        </layout>
       </widget>

@@ -17,7 +17,7 @@ public:
         ToUser          = 6,
         PriorityName    = 7,
         Categorie       = 8,
-        Project         = 9
+        SystemVersion         = 9
     };
 
     TicketItem();

@@ -19,19 +19,19 @@ public:
     int priorityID() const;
     void setPriorityID(int priorityID);
 
-    int projectID() const;
-    void setProjectID(int projectID);
+    int systemVersionID() const;
+    void setSystemVersionID(int systemVersionID);
 
-    int categorieID() const;
-    void setCategorieID(int categorieID);
+    int unitCategorieID() const;
+    void setUnitCategorieID(int unitCategorieID);
 
 private:
     int m_toUserID;
     int m_stateID;
     int m_typeID;
     int m_priorityID;
-    int m_projectID;
-    int m_categorieID;
+    int m_systemVersionID;
+    int m_unitCategorieID;
 };
 
 #endif // FILTEROBJECT_H

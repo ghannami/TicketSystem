@@ -5,6 +5,8 @@
 #include <QDateTime>
 #include "CommentItem.h"
 #include <QVariant>
+#include <QSqlError>
+#include <QDebug>
 
 NewTicket::NewTicket(QWidget *parent) :
     QDialog(parent),
@@ -14,6 +16,7 @@ NewTicket::NewTicket(QWidget *parent) :
 
     connect(ui->save, SIGNAL(clicked(bool)), this, SLOT(onSave()));
     connect(ui->abort, SIGNAL(clicked(bool)), this, SLOT(close()));
+    connect(ui->systemBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onSystemChanged(int)));
 
     setupeBoxes();
 }
@@ -21,6 +24,38 @@ NewTicket::NewTicket(QWidget *parent) :
 NewTicket::~NewTicket()
 {
     delete ui;
+}
+
+void NewTicket::setType(int typeID)
+{
+    for(int i = 0; i < ui->typeBox->count(); i++)
+    {
+        if(ui->typeBox->itemData(i) == typeID)
+            ui->typeBox->setCurrentIndex(i);
+    }
+}
+
+void NewTicket::setUnitCategorie(int categorieID)
+{
+    for(int i = 0; i < ui->categorieBox->count(); i++)
+    {
+        if(ui->categorieBox->itemData(i) == categorieID)
+            ui->categorieBox->setCurrentIndex(i);
+    }
+}
+
+void NewTicket::setSystemVersion(int systemVersion)
+{
+    for(int i = 0; i < ui->systemBox->count(); i++)
+    {
+        if(ui->systemBox->itemData(i) == systemVersion)
+            ui->systemBox->setCurrentIndex(i);
+    }
+}
+
+void NewTicket::setTitle(const QString &title)
+{
+    ui->title->setText(title);
 }
 
 void NewTicket::onSave()
@@ -32,18 +67,19 @@ void NewTicket::onSave()
     }
 
     QSqlQuery query(Global::i()->db());
-    query.prepare("INSERT INTO ticket (type, from_user, to_user, project, state, categorie, priority, title, date) "
-                  "VALUES (:type, :from_user, :to_user, :project, :state, :categorie, :priority, :title, :date)");
+    query.prepare("INSERT INTO ticket (type, from_user, to_user, system_version, state, unit_categorie, priority, title, date) "
+                  "VALUES (:type, :from_user, :to_user, :system_version, :state, :unit_categorie, :priority, :title, :date)");
     query.bindValue(":type", ui->typeBox->itemData(ui->typeBox->currentIndex()));
     query.bindValue(":from_user", Global::i()->userID());
     query.bindValue(":to_user", ui->toUserBox->itemData(ui->toUserBox->currentIndex()));
-    query.bindValue(":project", ui->projectBox->itemData(ui->projectBox->currentIndex()));
+    query.bindValue(":system_version", ui->systemBox->itemData(ui->systemBox->currentIndex()));
     query.bindValue(":state", 1);
-    query.bindValue(":categorie", ui->categorieBox->itemData(ui->categorieBox->currentIndex()));
+    query.bindValue(":unit_categorie", ui->categorieBox->itemData(ui->categorieBox->currentIndex()));
     query.bindValue(":priority", ui->priorityBox->itemData(ui->priorityBox->currentIndex()));
     query.bindValue(":title", ui->title->text());
     query.bindValue(":date", QDateTime::currentDateTime());
-    query.exec();
+    if(!query.exec())
+        qDebug() << query.lastError().text();
 
     int id = query.lastInsertId().toInt();
     CommentItem cItem;
@@ -94,18 +130,23 @@ void NewTicket::setupeBoxes()
     }
 
     i = 0;
-    mip = QMapIterator<int, QString>(Global::i()->categories());
+    mip = QMapIterator<int, QString>(Global::i()->systemVersions());
+    while(mip.hasNext())
+    {
+        mip.next();
+        ui->systemBox->insertItem(i++, mip.value(),mip.key());
+    }
+    if(i > 0)
+        ui->systemBox->setCurrentIndex(i-1);
+}
+
+void NewTicket::onSystemChanged(int index)
+{
+    int i = 0;
+   QMapIterator<int, QString>mip(Global::i()->systemUnitCategories(ui->systemBox->itemData(index).toInt()));
     while(mip.hasNext())
     {
         mip.next();
         ui->categorieBox->insertItem(i++, mip.value(),mip.key());
-    }
-
-    i = 0;
-    mip = QMapIterator<int, QString>(Global::i()->projects());
-    while(mip.hasNext())
-    {
-        mip.next();
-        ui->projectBox->insertItem(i++, mip.value(),mip.key());
     }
 }

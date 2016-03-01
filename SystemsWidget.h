@@ -9,6 +9,8 @@ class SystemsWidget;
 }
 class TreeModel;
 
+class SystemUnitDeatils;
+
 class SystemsWidget : public QWidget
 {
     Q_OBJECT
@@ -22,14 +24,19 @@ public slots:
 
 protected slots:
     void onSystemSelectionChanged(const QModelIndex &curr, const QModelIndex &prev);
-    void onTestsSelectionChanged(QModelIndex,QModelIndex);
+    void onUnitSelectionChanged(const QModelIndex &curr, const QModelIndex &prev);
     void updateSystemModel();
     void updateUnitsModel(int systemId, int systemVersionId);
+    void updateUnitsModel();
+
+signals:
+    void ticketCreated();
 
 private:
     Ui::SystemsWidget *ui;
     TreeModel *m_systemsModel;
     TreeModel *m_unitsModel;
+    SystemUnitDeatils *m_unitDetails;
 };
 
 #endif // SYSTEMSWIDGET_H

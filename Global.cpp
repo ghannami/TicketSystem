@@ -20,10 +20,11 @@ Global::Global()
     ticketTypes(true);
     projects(true);
     stats(true);
-    categories(true);
     taskTypes(true);
     prioritys(true);
     systems(true);
+    systemVersions(true);
+    unitCategories(true);
 }
 
 Global *Global::instance()
@@ -193,6 +194,20 @@ QMap<int, QString> Global::systems(bool reload)
     return m_systems;
 }
 
+QMap<int, QString> Global::systemVersions(bool reload)
+{
+    if(reload)
+    {
+        m_systemsVersions.clear();
+        QSqlQuery query("select sv.id as id, s.name as system_name, v.version as version from system s, system_version sv, version v where s.id = sv.system and v.id = sv.version ", db());
+        while(query.next())
+        {
+            m_systemsVersions.insert(query.value("id").toInt(), query.value("system_name").toString() + " " + query.value("version").toString());
+        }
+    }
+    return m_systemsVersions;
+}
+
 QMap<int, QString> Global::systemUnitCategories(int systemId)
 {
     m_systemsUnitCategories.clear();
@@ -204,6 +219,20 @@ QMap<int, QString> Global::systemUnitCategories(int systemId)
     return m_systemsUnitCategories;
 }
 
+QMap<int, QString> Global::unitCategories(bool reload)
+{
+    if(reload)
+    {
+        m_unitCategories.clear();
+        QSqlQuery query("SELECT * FROM system_unit_categorie ", db());
+        while(query.next())
+        {
+            m_unitCategories.insert(query.value("id").toInt(), query.value("name").toString());
+        }
+    }
+    return m_unitCategories;
+}
+
 QString Global::appPath()
 {
     return qApp->applicationDirPath();
@@ -213,20 +242,6 @@ QString Global::settingsFile()
 {
     QDir dir(appPath());
     return dir.filePath("settings.xml");
-}
-
-QMap<int, QString> Global::categories(bool reload)
-{
-    if(reload)
-    {
-        m_categories.clear();
-        QSqlQuery query("SELECT * FROM categories order by id asc", db());
-        while(query.next())
-        {
-            m_categories.insert(query.value("id").toInt(), query.value("name").toString());
-        }
-    }
-    return m_categories;
 }
 
 QMap<int, QString> Global::prioritys(bool reload)

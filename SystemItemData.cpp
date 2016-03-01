@@ -1,10 +1,14 @@
 #include "SystemItemData.h"
+#include <QColor>
 
 SystemItemData::SystemItemData(QSqlRecord record):
     m_record(record)
 {
+    m_passedCount = 0;
+    m_notPassedCount = 0;
     setName(m_record.value("name").toString());
     setVersion(m_record.value("version").toString());
+    setVersionName(m_record.value("version_name").toString());
     setID(m_record.value("id").toInt());
     setSystemVersionId(m_record.value("system_version").toInt());
     setDate(m_record.value("date").toDate());
@@ -22,14 +26,73 @@ QVariant SystemItemData::value(int column, int role)
         switch(column)
         {
         case 0:
-            return name();
+        {
+            QString t = name();
+            if(!versionName().isEmpty())
+                t += "("+versionName()+")";
+            return t;
+        }
         case 1:
             return version();
         case 2:
             return date();
+        case 3:
+            return passedCount();
+        case 4:
+            return notPassedCount();
+        case 5:
+            return unitsCount() - passedCount() - notPassedCount();
         }
     }
+    else if(role == Qt::BackgroundColorRole)
+    {
+        if(passedCount() == unitsCount())    // bestanden
+        {
+            return QColor(0,255,0, 50);
+        }
+        return QColor(230,0,0, 50);
+    }
     return QVariant();
+}
+
+QString SystemItemData::versionName() const
+{
+    return m_versionName;
+}
+
+void SystemItemData::setVersionName(const QString &versionName)
+{
+    m_versionName = versionName;
+}
+
+int SystemItemData::unitsCount() const
+{
+    return m_unitsCount;
+}
+
+void SystemItemData::setUnitsCount(int unitsCount)
+{
+    m_unitsCount = unitsCount;
+}
+
+int SystemItemData::notPassedCount() const
+{
+    return m_notPassedCount;
+}
+
+void SystemItemData::setNotPassedCount(int notPassedCount)
+{
+    m_notPassedCount = notPassedCount;
+}
+
+int SystemItemData::passedCount() const
+{
+    return m_passedCount;
+}
+
+void SystemItemData::setPassedCount(int passedCount)
+{
+    m_passedCount = passedCount;
 }
 
 int SystemItemData::systemVersionId() const

@@ -47,8 +47,8 @@ QVariant TicketItem::data(int column, int role) const
         case Categorie:
             return m_record.value("categoriename");
             break;
-        case Project:
-            return m_record.value("projectname");
+        case SystemVersion:
+            return Global::i()->systemVersions().value(m_record.value("systemversion").toInt());
             break;
         }
     }

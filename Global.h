@@ -29,15 +29,17 @@ public:
 
     QMap<int, QString> ticketTypes(bool reload = false);
 
-    QMap<int, QString> categories(bool reload = false);
-
     QMap<int, QString> prioritys(bool reload = false);
 
     QMap<int, QString> taskTypes(bool reload = false);
 
     QMap<int, QString> systems(bool reload = false);
 
+    QMap<int, QString> systemVersions(bool reload = false);
+
     QMap<int, QString> systemUnitCategories(int systemId);
+
+    QMap<int, QString> unitCategories(bool reload = false);
 
     QString appPath();
     QString settingsFile();
@@ -52,10 +54,11 @@ private:
     QMap<int, QString> m_projects;
     QMap<int, QString> m_ticketTypes;
     QMap<int, QString> m_taskeTypes;
-    QMap<int, QString> m_categories;
     QMap<int, QString> m_prioritys;
     QMap<int, QString> m_systems;
+    QMap<int, QString> m_systemsVersions;
     QMap<int, QString> m_systemsUnitCategories;
+    QMap<int, QString> m_unitCategories;
 };
 
 #endif // GLOBAL_H

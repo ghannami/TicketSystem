@@ -6,8 +6,8 @@ FilterObject::FilterObject()
     setStateID(0);
     setTypeID(0);
     setPriorityID(0);
-    setProjectID(0);
-    setCategorieID(0);
+    setSystemVersionID(0);
+    setUnitCategorieID(0);
 }
 
 int FilterObject::toUserID() const
@@ -50,23 +50,23 @@ void FilterObject::setPriorityID(int priorityID)
     m_priorityID = priorityID;
 }
 
-int FilterObject::projectID() const
+int FilterObject::systemVersionID() const
 {
-    return m_projectID;
+    return m_systemVersionID;
 }
 
-void FilterObject::setProjectID(int projectID)
+void FilterObject::setSystemVersionID(int projectID)
 {
-    m_projectID = projectID;
+    m_systemVersionID = projectID;
 }
 
-int FilterObject::categorieID() const
+int FilterObject::unitCategorieID() const
 {
-    return m_categorieID;
+    return m_unitCategorieID;
 }
 
-void FilterObject::setCategorieID(int categorieID)
+void FilterObject::setUnitCategorieID(int categorieID)
 {
-    m_categorieID = categorieID;
+    m_unitCategorieID = categorieID;
 }
 

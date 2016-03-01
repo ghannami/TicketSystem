@@ -15,16 +15,12 @@ MainWindow::MainWindow(QWidget *parent) :
     createActions();
     createTrayIcon();
 
-    showMaximized();
     m_tickets = new TicketsWidget();
     QHBoxLayout *tLay = new QHBoxLayout();
     tLay->addWidget(m_tickets);
     ui->tickets->setLayout(tLay);
-//    connect(ui->actionTicket, SIGNAL(triggered(bool)), m_tickets, SLOT(newTicket()));
 
     m_tasks = new ProjectTasksWidget();
-//    connect(ui->actionTask, SIGNAL(triggered(bool)), m_tasks, SLOT(newTask()));
-//    connect(ui->actionProjekt, SIGNAL(triggered(bool)), m_tasks, SLOT(newProject()));
     QHBoxLayout *pLay = new QHBoxLayout();
     pLay->addWidget(m_tasks);
     ui->projects->setLayout(pLay);
@@ -51,6 +47,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->mainToolBar->addAction(QIcon(":/icon/icons/clipboard.png"),tr("Neues Ticket"), m_tickets, SLOT(newTicket()));
     ui->mainToolBar->addAction(QIcon(":/icon/icons/clock.png"),tr("Neuer Task"), m_tasks, SLOT(newTask()));
     ui->mainToolBar->addAction(QIcon(":/icon/icons/file.png"),tr("Neuer Testfall"), sysWidget, SLOT(newSystemUnit()));
+    connect(sysWidget, SIGNAL(ticketCreated()), m_tickets, SLOT(updateModel()));
+
+    showMaximized();
 }
 
 MainWindow::~MainWindow()

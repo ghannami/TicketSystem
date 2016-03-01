@@ -20,10 +20,16 @@ public:
 
 protected slots:
     void onTestStateChanged(int index);
+    void newTicket();
+
+signals:
+    void unitDataChanged();
+    void ticketCreated();
 
 private:
     Ui::SystemUnitDeatils *ui;
     SystemUnitData *m_systemUnitData;
+    bool m_blockUpdate;
 };
 
 #endif // SYSTEMUNITDEATILS_H

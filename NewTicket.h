@@ -14,9 +14,14 @@ class NewTicket : public QDialog
 public:
     explicit NewTicket(QWidget *parent = 0);
     ~NewTicket();
+    void setType(int typeID);
+    void setUnitCategorie(int categorieID);
+    void setSystemVersion(int systemVersion);
+    void setTitle(const QString &title);
 
 protected slots:
     void onSave();
+    void onSystemChanged(int index);
 
 protected:
     void setupeBoxes();

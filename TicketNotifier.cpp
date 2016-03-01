@@ -29,7 +29,8 @@ TicketNotifier *TicketNotifier::i()
 
 void TicketNotifier::loadLastTicket()
 {
-    QSqlQuery query("SELECT id  FROM ticketsystem.ticket order by id desc LIMIT 1;", Global::i()->db());
+    QString q = QString("SELECT id  FROM ticket where to_user = %1 order by id desc LIMIT 1;").arg(Global::i()->userID());
+    QSqlQuery query(q, Global::i()->db());
     if(query.next())
     {
         setLastTicketID(query.value("id").toInt());

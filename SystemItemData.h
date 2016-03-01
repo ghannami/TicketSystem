@@ -26,6 +26,19 @@ public:
     int systemVersionId() const;
     void setSystemVersionId(int systemVersionId);
 
+
+    int passedCount() const;
+    void setPassedCount(int passedCount);
+
+    int notPassedCount() const;
+    void setNotPassedCount(int notPassedCount);
+
+    int unitsCount() const;
+    void setUnitsCount(int unitsCount);
+
+    QString versionName() const;
+    void setVersionName(const QString &versionName);
+
 protected:
     virtual bool setValue(int column, const QVariant & value, int role) override;
     virtual QVariant value(int column, int role) override;
@@ -34,9 +47,14 @@ private:
     QSqlRecord m_record;
     QString m_name;
     QString m_version;
+    QString m_versionName;
     QDate m_date;
     int m_ID;
     int m_systemVersionId;
+    int m_passedCount;
+    int m_notPassedCount;
+    int m_unitsCount;
+
 };
 
 #endif // SYSTEMITEMDATA_H

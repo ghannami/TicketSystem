@@ -19,7 +19,7 @@ NewSystemUnit::NewSystemUnit(QWidget *parent) :
         ui->system->insertItem(i++, mip.value(),mip.key());
     }
     i = 0;
-
+    ui->title->setFocus();
 }
 
 NewSystemUnit::~NewSystemUnit()
