@@ -8,6 +8,7 @@ FilterObject::FilterObject()
     setPriorityID(0);
     setSystemVersionID(0);
     setUnitCategorieID(0);
+    setCustomerID(0);
 }
 
 int FilterObject::toUserID() const
@@ -68,5 +69,15 @@ int FilterObject::unitCategorieID() const
 void FilterObject::setUnitCategorieID(int categorieID)
 {
     m_unitCategorieID = categorieID;
+}
+
+int FilterObject::customerID() const
+{
+    return m_customerID;
+}
+
+void FilterObject::setCustomerID(int customerID)
+{
+    m_customerID = customerID;
 }
 

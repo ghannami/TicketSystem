@@ -23,15 +23,15 @@ TicketsWidget::TicketsWidget(QWidget *parent) :
     ui->ticketView->verticalHeader()->setVisible(false);
     ui->ticketView->setAutoScroll(true);
 
-    m_model->setHeaders(QStringList()<<""<<"TicketID"<<"Titel"<<"Status"<<"Erstellt am"
+    m_model->setHeaders(QStringList()<<""<<"TicketID"<<"Titel"<<"Kunde"<<"Erstellt am"
                         <<"Erstellt von"<<"Zugewiesen an"<<"Priorität"<<"Modul"<<"Projekt"<<"");
 
     refreshModel();
 
     ui->ticketView->setColumnWidth(TicketItem::TicketIcon, 32);
     ui->ticketView->setColumnWidth(TicketItem::TicketID, 60);
-    ui->ticketView->setColumnWidth(TicketItem::TicketTitle, 600);
-    ui->ticketView->setColumnWidth(TicketItem::StateName, 100);
+    ui->ticketView->setColumnWidth(TicketItem::TicketTitle, 500);
+    ui->ticketView->setColumnWidth(TicketItem::CostumerName, 250);
     ui->ticketView->setColumnWidth(TicketItem::TicketDate, 100);
     ui->ticketView->setColumnWidth(TicketItem::FromUser, 100);
     ui->ticketView->setColumnWidth(TicketItem::ToUser, 100);
@@ -59,6 +59,7 @@ TicketsWidget::TicketsWidget(QWidget *parent) :
     connect(ui->toUserBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onFilterChanged()));
     connect(ui->unitCategorieBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onFilterChanged()));
     connect(ui->systemBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onFilterChanged()));
+    connect(ui->customerBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onFilterChanged()));
 
     connect(ui->ticketView->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), this, SLOT(onSelectionChanged(QModelIndex, QModelIndex)));
     connect(m_ticketDetails, SIGNAL(changed()), this, SLOT(updateModel()));
@@ -97,6 +98,7 @@ void TicketsWidget::onFilterChanged()
     filter->setTypeID(ui->typeBox->itemData(ui->typeBox->currentIndex()).toInt());
     filter->setUnitCategorieID(ui->unitCategorieBox->itemData(ui->unitCategorieBox->currentIndex()).toInt());
     filter->setSystemVersionID(ui->systemBox->itemData(ui->systemBox->currentIndex()).toInt());
+    filter->setCustomerID(ui->customerBox->itemData(ui->customerBox->currentIndex()).toInt());
 
     ui->ticketView->clearSelection();
     m_ticketDetails->setTicketID(0);
@@ -138,6 +140,7 @@ void TicketsWidget::setupeBoxes()
     ui->priorityBox->insertItem(0,tr("Alle"),0);
     ui->unitCategorieBox->insertItem(0,tr("Alle"),0);
     ui->systemBox->insertItem(0,tr("Alle"),0);
+    ui->customerBox->insertItem(0,tr("Alle"),0);
 
     int i=1;
     QMapIterator<int, QString>mip(Global::i()->users());
@@ -185,5 +188,13 @@ void TicketsWidget::setupeBoxes()
     {
         mip.next();
         ui->systemBox->insertItem(i++, mip.value(),mip.key());
+    }
+
+    i = 1;
+    mip = QMapIterator<int, QString>(Global::i()->customers());
+    while(mip.hasNext())
+    {
+        mip.next();
+        ui->customerBox->insertItem(i++, mip.value(),mip.key());
     }
 }

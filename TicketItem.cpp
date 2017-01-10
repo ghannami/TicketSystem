@@ -29,8 +29,8 @@ QVariant TicketItem::data(int column, int role) const
         case TicketTitle:
             return m_record.value("title");
             break;
-        case StateName:
-            return m_record.value("statename");
+        case CostumerName:
+            return m_record.value("customername");
             break;
         case TicketDate:
             return m_record.value("date");
@@ -121,7 +121,7 @@ bool TicketItem::viewed() const
     return m_viewed;
 }
 
-void TicketItem::setViewed(bool viewed)
+void TicketItem::setViewed(bool viewed, bool updateSql)
 {
     if(m_viewed != viewed)
     {
@@ -129,9 +129,12 @@ void TicketItem::setViewed(bool viewed)
         int v = 0;
         if(m_viewed)
             v = 1;
-        QSqlQuery query(QString("UPDATE comments set viewed = %1 where ticket = %2 and to_user = %3")
-                        .arg(v).arg(ticketID()).arg(Global::i()->userID()), Global::i()->db());
-        query.exec();
+        if(updateSql)
+        {
+            QSqlQuery query(QString("UPDATE comments set viewed = %1 where ticket = %2 and to_user = %3")
+                            .arg(v).arg(ticketID()).arg(Global::i()->userID()), Global::i()->db());
+            query.exec();
+        }
     }
 }
 

@@ -6,6 +6,7 @@
 #include "TicketNotifier.h"
 #include "Global.h"
 #include "SystemsWidget.h"
+#include "CustomersWidget.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -41,12 +42,16 @@ MainWindow::MainWindow(QWidget *parent) :
     sLay->addWidget(sysWidget);
     ui->systems->setLayout(sLay);
 
+    /// TODO: TabWidget
+    CustomersWidget *cstm = new CustomersWidget();
+
     setStartWithSystem(true);
 
     ui->mainToolBar->addAction(QIcon(":/icon/icons/graph.png"),tr("Neus Projekt"), m_tasks, SLOT(newProject()));
     ui->mainToolBar->addAction(QIcon(":/icon/icons/clipboard.png"),tr("Neues Ticket"), m_tickets, SLOT(newTicket()));
     ui->mainToolBar->addAction(QIcon(":/icon/icons/clock.png"),tr("Neuer Task"), m_tasks, SLOT(newTask()));
     ui->mainToolBar->addAction(QIcon(":/icon/icons/file.png"),tr("Neuer Testfall"), sysWidget, SLOT(newSystemUnit()));
+    ui->mainToolBar->addAction(QIcon(":/icon/icons/person.png"),tr("Neuer Kunde"), cstm, SLOT(newCustomer()));
     connect(sysWidget, SIGNAL(ticketCreated()), m_tickets, SLOT(updateModel()));
 
     showMaximized();

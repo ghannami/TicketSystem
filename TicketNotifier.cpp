@@ -61,7 +61,7 @@ void TicketNotifier::setLastTicketID(int lastTicketID)
 {
     if(lastTicketID > m_lastTicketID && !m_firstStart)
         emit showMessage(tr("TicketSystem"),
-                         tr("Es gibt ein neues Ticket für dich.\nTicketID: %1\nHier klicken um zu öffnen").arg(m_lastTicketID), 60000);
+                         tr("Es gibt ein neues Ticket für dich.\nTicketID: %1\nHier klicken um zu öffnen").arg(lastTicketID), 60000);
     m_lastTicketID = lastTicketID;
 
     m_firstStart = false;

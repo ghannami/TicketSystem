@@ -25,65 +25,75 @@
         <property name="horizontalSpacing">
          <number>12</number>
         </property>
-        <item row="0" column="3">
-         <widget class="QLabel" name="label_3">
-          <property name="text">
-           <string>Priorität</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="2">
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>Zugewiesen an</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="2">
+        <item row="1" column="3">
          <widget class="QComboBox" name="toUserBox"/>
         </item>
-        <item row="1" column="3">
-         <widget class="QComboBox" name="priorityBox"/>
+        <item row="1" column="5">
+         <widget class="QComboBox" name="systemBox"/>
         </item>
-        <item row="1" column="1">
-         <widget class="QComboBox" name="typeBox"/>
-        </item>
-        <item row="0" column="1">
+        <item row="0" column="2">
          <widget class="QLabel" name="label_4">
           <property name="text">
            <string>Type</string>
           </property>
          </widget>
         </item>
-        <item row="0" column="5">
-         <widget class="QLabel" name="label_5">
-          <property name="text">
-           <string>Kategorie</string>
-          </property>
-         </widget>
+        <item row="1" column="2">
+         <widget class="QComboBox" name="typeBox"/>
         </item>
-        <item row="1" column="0">
-         <widget class="QComboBox" name="stateBox"/>
-        </item>
-        <item row="1" column="5">
-         <widget class="QComboBox" name="unitCategorieBox"/>
-        </item>
-        <item row="0" column="0">
+        <item row="0" column="1">
          <widget class="QLabel" name="label">
           <property name="text">
            <string>Status</string>
           </property>
          </widget>
         </item>
-        <item row="0" column="4">
+        <item row="1" column="6">
+         <widget class="QComboBox" name="unitCategorieBox"/>
+        </item>
+        <item row="1" column="1">
+         <widget class="QComboBox" name="stateBox"/>
+        </item>
+        <item row="0" column="6">
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Kategorie</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="5">
          <widget class="QLabel" name="label_6">
           <property name="text">
            <string>System</string>
           </property>
          </widget>
         </item>
+        <item row="0" column="3">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Zugewiesen an</string>
+          </property>
+         </widget>
+        </item>
         <item row="1" column="4">
-         <widget class="QComboBox" name="systemBox"/>
+         <widget class="QComboBox" name="priorityBox"/>
+        </item>
+        <item row="0" column="4">
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>Priorität</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_7">
+          <property name="text">
+           <string>Kunde</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QComboBox" name="customerBox"/>
         </item>
        </layout>
       </widget>

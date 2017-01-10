@@ -25,6 +25,7 @@ Global::Global()
     systems(true);
     systemVersions(true);
     unitCategories(true);
+    customers(true);
 }
 
 Global *Global::instance()
@@ -256,6 +257,20 @@ QMap<int, QString> Global::prioritys(bool reload)
         }
     }
     return m_prioritys;
+}
+
+QMap<int, QString> Global::customers(bool reload)
+{
+    if(reload)
+    {
+        m_customers.clear();
+        QSqlQuery query("SELECT * FROM customer ", db());
+        while(query.next())
+        {
+            m_customers.insert(query.value("id").toInt(), query.value("name").toString());
+        }
+    }
+    return m_customers;
 }
 
 void Global::setUserName(const QString &userName)

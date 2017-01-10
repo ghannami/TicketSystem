@@ -11,13 +11,13 @@ public:
         TicketIcon      = 0,
         TicketID        = 1,
         TicketTitle     = 2,
-        StateName       = 3,
+        CostumerName    = 3,
         TicketDate      = 4,
         FromUser        = 5,
         ToUser          = 6,
         PriorityName    = 7,
         Categorie       = 8,
-        SystemVersion         = 9
+        SystemVersion   = 9
     };
 
     TicketItem();
@@ -33,7 +33,7 @@ public:
 
 
     bool viewed() const;
-    void setViewed(bool viewed);
+    void setViewed(bool viewed, bool updateSql = false);
 
     int fromUser() const;
     int toUser() const;

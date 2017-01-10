@@ -25,6 +25,9 @@ public:
     int unitCategorieID() const;
     void setUnitCategorieID(int unitCategorieID);
 
+    int customerID() const;
+    void setCustomerID(int customerID);
+
 private:
     int m_toUserID;
     int m_stateID;
@@ -32,6 +35,7 @@ private:
     int m_priorityID;
     int m_systemVersionID;
     int m_unitCategorieID;
+    int m_customerID;
 };
 
 #endif // FILTEROBJECT_H

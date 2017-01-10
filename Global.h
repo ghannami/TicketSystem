@@ -41,6 +41,8 @@ public:
 
     QMap<int, QString> unitCategories(bool reload = false);
 
+    QMap<int, QString> customers(bool reload = false);
+
     QString appPath();
     QString settingsFile();
 
@@ -59,6 +61,7 @@ private:
     QMap<int, QString> m_systemsVersions;
     QMap<int, QString> m_systemsUnitCategories;
     QMap<int, QString> m_unitCategories;
+    QMap<int, QString> m_customers;
 };
 
 #endif // GLOBAL_H

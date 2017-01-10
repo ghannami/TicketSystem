@@ -139,8 +139,10 @@ void TicketModel::updateModel()
     QString q    = " SELECT t.id as id, t.title as title, s.id as state, s.name as statename , t.date as date, ";
     q           += " t.processed_by as processed_by, t.tested_by as tested_by, ";
     q           += " user1.name as fromuser, user2.name as touser, prio.name as priorityname, t.type, sys.id as systemversion, cat.name as categoriename ";
-    q           += " FROM ticket t, state s, user user1, user user2, priority prio, system_version sys, system_unit_categorie cat ";
-    q           += " where t.state = s.id and user1.id = t.from_user and user2.id = t.to_user and prio.id = t.priority and cat.id = t.unit_categorie and sys.id = t.system_version ";
+    q           += " , cstm.id as customer, cstm.name as customername ";
+    q           += " FROM ticket t, state s, user user1, user user2, priority prio, system_version sys, system_unit_categorie cat, customer cstm ";
+    q           += " where t.state = s.id and user1.id = t.from_user and user2.id = t.to_user and prio.id = t.priority ";
+    q           += " and cat.id = t.unit_categorie and sys.id = t.system_version and cstm.id = t.customer ";
     if(filterObject()->stateID() > 0)
         q+= " AND s.id = " +QString::number(filterObject()->stateID()) + " ";
     if(filterObject()->typeID() > 0)
@@ -153,8 +155,10 @@ void TicketModel::updateModel()
         q+= " AND t.unit_categorie = " +QString::number(filterObject()->unitCategorieID()) + " ";
     if(filterObject()->systemVersionID() > 0)
         q+= " AND t.system_version = " +QString::number(filterObject()->systemVersionID()) + " ";
+    if(filterObject()->customerID() > 0)
+        q+= " AND t.customer = " +QString::number(filterObject()->customerID()) + " ";
 
-    q           += "order by state asc, prio.number desc, t.date asc;";
+    q+= "order by state asc, prio.number desc, t.date asc;";
 
     QSqlQuery query(q, Global::i()->db());
     while(query.next())

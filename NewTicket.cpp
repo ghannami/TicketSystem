@@ -136,6 +136,15 @@ void NewTicket::setupeBoxes()
         mip.next();
         ui->systemBox->insertItem(i++, mip.value(),mip.key());
     }
+
+    i = 1;
+    mip = QMapIterator<int, QString>(Global::i()->customers());
+    while(mip.hasNext())
+    {
+        mip.next();
+        ui->customerBox->insertItem(i++, mip.value(),mip.key());
+    }
+
     if(i > 0)
         ui->systemBox->setCurrentIndex(i-1);
 }

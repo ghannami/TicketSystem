@@ -85,7 +85,7 @@ void TicketDetails::setTicketID(int ticketID)
     m_ticketID = ticketID;
     if(m_model->item(m_model->index(m_ticketID)))
     {
-        m_model->item(m_model->index(m_ticketID))->setViewed(true);
+        m_model->item(m_model->index(m_ticketID))->setViewed(true, true);
     }
     updateTicket();
 }
@@ -95,13 +95,15 @@ void TicketDetails::updateTicket()
     m_blockFieldsChange = true;
     ui->ticketIDLabel->setText(QString::number(m_ticketID));
     loadComments();
-    QSqlQuery query("SELECT state, from_user, to_user, priority FROM ticket where id = "+QString::number(m_ticketID), Global::i()->db());
+    QSqlQuery query("SELECT title, state, from_user, to_user, priority, customer FROM ticket where id = "+QString::number(m_ticketID), Global::i()->db());
     if(query.next())
     {
         m_ticketState = query.value("state").toInt();
         m_fromUserID = query.value("from_user").toInt();
         m_toUserID = query.value("to_user").toInt();
     }
+    ui->customerLabel->setText(Global::i()->customers().value(query.value("customer").toInt()));
+    ui->title->setText(query.value("title").toString());
     for(int index = 0; index < ui->commentToUserBox->count(); index++)
     {
         if(ui->ticketToUserBox->itemData(index).toInt() == m_toUserID)

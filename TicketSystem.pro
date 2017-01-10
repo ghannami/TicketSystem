@@ -51,7 +51,10 @@ SOURCES += main.cpp\
     NewSystemUnit.cpp \
     SystemUnitData.cpp \
     SystemUnitCatData.cpp \
-    SystemUnitDeatils.cpp
+    SystemUnitDeatils.cpp \
+    CustomersWidget.cpp \
+    NewCustomer.cpp \
+    CustomerData.cpp
 
 HEADERS  += MainWindow.h \
     TicketModel.h \
@@ -81,7 +84,10 @@ HEADERS  += MainWindow.h \
     NewSystemUnit.h \
     SystemUnitData.h \
     SystemUnitCatData.h \
-    SystemUnitDeatils.h
+    SystemUnitDeatils.h \
+    CustomersWidget.h \
+    NewCustomer.h \
+    CustomerData.h
 
 FORMS    += mainwindow.ui \
     NewTicket.ui \
@@ -93,7 +99,9 @@ FORMS    += mainwindow.ui \
     NewProject.ui \
     SystemsWidget.ui \
     NewSystemUnit.ui \
-    SystemUnitDeatils.ui
+    SystemUnitDeatils.ui \
+    CustomersWidget.ui \
+    NewCustomer.ui
 
 RESOURCES += \
     rsc.qrc
