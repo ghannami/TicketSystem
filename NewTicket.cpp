@@ -67,8 +67,8 @@ void NewTicket::onSave()
     }
 
     QSqlQuery query(Global::i()->db());
-    query.prepare("INSERT INTO ticket (type, from_user, to_user, system_version, state, unit_categorie, priority, title, date) "
-                  "VALUES (:type, :from_user, :to_user, :system_version, :state, :unit_categorie, :priority, :title, :date)");
+    query.prepare("INSERT INTO ticket (type, from_user, to_user, system_version, state, unit_categorie, priority, title, date, customer) "
+                  "VALUES (:type, :from_user, :to_user, :system_version, :state, :unit_categorie, :priority, :title, :date, :customer)");
     query.bindValue(":type", ui->typeBox->itemData(ui->typeBox->currentIndex()));
     query.bindValue(":from_user", Global::i()->userID());
     query.bindValue(":to_user", ui->toUserBox->itemData(ui->toUserBox->currentIndex()));
@@ -78,6 +78,7 @@ void NewTicket::onSave()
     query.bindValue(":priority", ui->priorityBox->itemData(ui->priorityBox->currentIndex()));
     query.bindValue(":title", ui->title->text());
     query.bindValue(":date", QDateTime::currentDateTime());
+    query.bindValue(":customer", ui->customerBox->itemData(ui->customerBox->currentIndex()));
     if(!query.exec())
         qDebug() << query.lastError().text();
 
@@ -136,17 +137,16 @@ void NewTicket::setupeBoxes()
         mip.next();
         ui->systemBox->insertItem(i++, mip.value(),mip.key());
     }
+    if(i > 0)
+        ui->systemBox->setCurrentIndex(i-1);
 
-    i = 1;
+    i = 0;
     mip = QMapIterator<int, QString>(Global::i()->customers());
     while(mip.hasNext())
     {
         mip.next();
         ui->customerBox->insertItem(i++, mip.value(),mip.key());
     }
-
-    if(i > 0)
-        ui->systemBox->setCurrentIndex(i-1);
 }
 
 void NewTicket::onSystemChanged(int index)
