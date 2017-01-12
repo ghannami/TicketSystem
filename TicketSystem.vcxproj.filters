@@ -255,6 +255,15 @@
     <ClCompile Include="CustomersWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TicketsChartView.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_TicketsChartView.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_TicketsChartView.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_LoginWidget.h">
@@ -348,6 +357,9 @@
       <Filter>Generated Files</Filter>
     </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_CustomersWidget.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_TicketsChartView.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -467,6 +479,12 @@
       <Filter>Form Files</Filter>
     </CustomBuild>
     <CustomBuild Include="NewCustomer.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="TicketsChartView.h">
+      <Filter>Generated Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="TicketsChartView.ui">
       <Filter>Form Files</Filter>
     </CustomBuild>
   </ItemGroup>

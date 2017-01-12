@@ -8,6 +8,7 @@
 
 class TicketModel;
 class TicketDetails;
+class TicketsChartView;
 
 namespace Ui {
 class TicketsWidget;
@@ -33,6 +34,7 @@ private:
     Ui::TicketsWidget *ui;
     TicketModel *m_model;
     TicketDetails *m_ticketDetails;
+    TicketsChartView *m_chartView;
 };
 
 #endif // TICKETSWIDGET_H

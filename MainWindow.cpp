@@ -52,6 +52,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->mainToolBar->addAction(QIcon(":/icon/icons/clock.png"),tr("Neuer Task"), m_tasks, SLOT(newTask()));
     ui->mainToolBar->addAction(QIcon(":/icon/icons/file.png"),tr("Neuer Testfall"), sysWidget, SLOT(newSystemUnit()));
     ui->mainToolBar->addAction(QIcon(":/icon/icons/person.png"),tr("Neuer Kunde"), cstm, SLOT(newCustomer()));
+
+    connect(cstm, SIGNAL(customerAdded()), m_tickets, SLOT(setupeBoxes()));
     connect(sysWidget, SIGNAL(ticketCreated()), m_tickets, SLOT(updateModel()));
 
     showMaximized();

@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui sql xml
+QT       += core gui sql xml charts
 
 CONFIG += c++11
 
@@ -54,7 +54,8 @@ SOURCES += main.cpp\
     SystemUnitDeatils.cpp \
     CustomersWidget.cpp \
     NewCustomer.cpp \
-    CustomerData.cpp
+    CustomerData.cpp \
+    TicketsChartView.cpp
 
 HEADERS  += MainWindow.h \
     TicketModel.h \
@@ -87,7 +88,8 @@ HEADERS  += MainWindow.h \
     SystemUnitDeatils.h \
     CustomersWidget.h \
     NewCustomer.h \
-    CustomerData.h
+    CustomerData.h \
+    TicketsChartView.h
 
 FORMS    += mainwindow.ui \
     NewTicket.ui \
@@ -101,7 +103,8 @@ FORMS    += mainwindow.ui \
     NewSystemUnit.ui \
     SystemUnitDeatils.ui \
     CustomersWidget.ui \
-    NewCustomer.ui
+    NewCustomer.ui \
+    TicketsChartView.ui
 
 RESOURCES += \
     rsc.qrc

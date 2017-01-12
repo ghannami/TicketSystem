@@ -140,12 +140,12 @@ void TicketItem::setViewed(bool viewed, bool updateSql)
 
 int TicketItem::fromUser() const
 {
-    return m_record.value("from_user").toInt();
+    return m_record.value("from_user_id").toInt();
 }
 
 int TicketItem::toUser() const
 {
-    return m_record.value("to_user").toInt();
+    return m_record.value("to_user_id").toInt();
 }
 
 int TicketItem::processedBy() const

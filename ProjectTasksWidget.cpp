@@ -95,7 +95,8 @@ void ProjectTasksWidget::refreshModel()
     tq += " tsk.task_order as task_order, tsk.percent as percent, tsk.description as description, tsk.project_task_type as project_task_type, ";
     tq += " tsk.date as date, ";
     tq += " tp.name as task_type, tsk.project_id as project_id ";
-    tq += " FROM project_task tsk, project_task_type tp where tsk.project_task_type = tp.id order by tsk.task_order asc;";
+    tq += " FROM project_task tsk, project_task_type tp where year(task_start)=year(curdate())";
+    tq += " AND tsk.project_task_type = tp.id order by tsk.task_order asc;";
     QSqlQuery tQuery(tq, Global::i()->db());
     while(tQuery.next())
     {

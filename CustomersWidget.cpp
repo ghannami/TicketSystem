@@ -20,5 +20,6 @@ void CustomersWidget::newCustomer()
     if(cstm.exec() == QDialog::Accepted)
     {
         ///
+        emit customerAdded();
     }
 }

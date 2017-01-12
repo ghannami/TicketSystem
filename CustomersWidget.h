@@ -30,6 +30,9 @@ public:
 protected slots:
     void newCustomer();
 
+signals:
+    void customerAdded();
+
 private:
     Ui::CustomersWidget *ui;
 };

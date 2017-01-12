@@ -137,7 +137,7 @@ void TicketModel::updateModel()
     }
 
     QString q    = " SELECT t.id as id, t.title as title, s.id as state, s.name as statename , t.date as date, ";
-    q           += " t.processed_by as processed_by, t.tested_by as tested_by, ";
+    q           += " t.processed_by as processed_by, t.tested_by as tested_by, t.from_user as from_user_id, t.to_user as to_user_id, ";
     q           += " user1.name as fromuser, user2.name as touser, prio.name as priorityname, t.type, sys.id as systemversion, cat.name as categoriename ";
     q           += " , cstm.id as customer, cstm.name as customername ";
     q           += " FROM ticket t, state s, user user1, user user2, priority prio, system_version sys, system_unit_categorie cat, customer cstm ";

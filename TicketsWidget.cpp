@@ -11,6 +11,7 @@
 #include "Global.h"
 #include "NewTicket.h"
 #include "TicketDetails.h"
+#include "TicketsChartView.h"
 
 TicketsWidget::TicketsWidget(QWidget *parent) :
     QWidget(parent),
@@ -22,6 +23,11 @@ TicketsWidget::TicketsWidget(QWidget *parent) :
     ui->ticketView->horizontalHeader()->setVisible(true);
     ui->ticketView->verticalHeader()->setVisible(false);
     ui->ticketView->setAutoScroll(true);
+
+    m_chartView = new TicketsChartView();
+    QVBoxLayout *chartLay = new QVBoxLayout();
+    chartLay->addWidget(m_chartView);
+    ui->statisticWidget->setLayout(chartLay);
 
     m_model->setHeaders(QStringList()<<""<<"TicketID"<<"Titel"<<"Kunde"<<"Erstellt am"
                         <<"Erstellt von"<<"Zugewiesen an"<<"Priorität"<<"Modul"<<"Projekt"<<"");
@@ -86,6 +92,9 @@ void TicketsWidget::refreshModel()
     m_model->updateModel();
     if(m_model->index(ticketID).isValid())
         ui->ticketView->setCurrentIndex(m_model->index(ticketID));
+
+    m_chartView->setModel(m_model);
+
     QTimer::singleShot(60000, this, SLOT(refreshModel()));
 }
 
@@ -107,6 +116,9 @@ void TicketsWidget::onFilterChanged()
     {
         ui->ticketView->selectionModel()->setCurrentIndex(m_model->index(0,0), QItemSelectionModel::SelectCurrent);
     }
+
+    m_chartView->setModel(m_model);
+
 }
 
 void TicketsWidget::newTicket()
