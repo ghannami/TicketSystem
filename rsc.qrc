@@ -19,5 +19,9 @@
         <file>icons/milestone.png</file>
         <file>icons/termin.png</file>
         <file>icons/person.png</file>
+        <file>icons/change.png</file>
+        <file>icons/alarm-green.png</file>
+        <file>icons/alarm-red.png</file>
+        <file>icons/alarm-yellow.png</file>
     </qresource>
 </RCC>

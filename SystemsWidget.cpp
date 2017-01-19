@@ -53,6 +53,52 @@ SystemsWidget::~SystemsWidget()
     delete ui;
 }
 
+void SystemsWidget::fillSystemModel(TreeModel *systemsModel, bool loadUnits )
+{
+    systemsModel->clearModel();
+
+    int unitsCount = 0;
+    if(loadUnits)
+    {
+        QString uq = "SELECT count(*) from system_unit;";
+        QSqlQuery uQuery(uq, Global::i()->db());
+        if(uQuery.next())
+        {
+            unitsCount = uQuery.value(0).toInt();
+        }
+    }
+
+    QString q = "SELECT s.id as id, s.name as name, v.version as version, v.name as version_name, sv.revision as revision, ";
+            q+= " sv.date as date, sv.id as system_version ";
+            q+= " FROM system_version sv, system s, version v ";
+            q+= " WHERE sv.system = s.id AND sv.version = v.id ";
+            q+= " order by sv.date desc;";
+
+    QSqlQuery query(q, Global::i()->db());
+    while(query.next())
+    {
+        SystemItemData *sysData = new SystemItemData(query.record());
+        TreeItem *sys = new TreeItem(sysData);
+        systemsModel->addItem(sys, systemsModel->rootItem(), systemsModel->rootItem()->childCount());
+
+        if(loadUnits)
+        {
+            sysData->setUnitsCount(unitsCount);
+            QString sq = "SELECT sys.id as system, ut.test_state, count(ut.test_state) as state_count from system_unit_test ut, system_version sys ";
+                    sq+= "where sys.id = ut.system_version and sys.id = "+ QString::number(sysData->systemVersionId()) +" ";
+                    sq+= "group by sys.id, ut.test_state ";
+            QSqlQuery sQuery(sq, Global::i()->db());
+            while(sQuery.next())
+            {
+                if(sQuery.value("test_state").toInt() == 1)
+                    sysData->setPassedCount(sQuery.value("state_count").toInt());
+                else if(sQuery.value("test_state").toInt() == 2)
+                    sysData->setNotPassedCount(sQuery.value("state_count").toInt());
+            }
+        }
+    }
+}
+
 void SystemsWidget::newSystemUnit()
 {
     NewSystemUnit unit;
@@ -97,38 +143,8 @@ void SystemsWidget::updateSystemModel()
 {
     m_systemsModel->clearModel();
     m_unitsModel->clearModel();
-    int unitsCount = 0;
-    QString uq = "SELECT count(*) from system_unit;";
-    QSqlQuery uQuery(uq, Global::i()->db());
-    if(uQuery.next())
-    {
-        unitsCount = uQuery.value(0).toInt();
-    }
 
-    QString q = "SELECT s.id as id, s.name as name, v.version as version, v.name as version_name, sv.date as date, sv.id as system_version FROM system_version sv, system s, version v ";
-            q+= " WHERE sv.system = s.id AND sv.version = v.id ";
-            q+= " order by sv.date desc;";
-
-    QSqlQuery query(q, Global::i()->db());
-    while(query.next())
-    {
-        SystemItemData *sysData = new SystemItemData(query.record());
-        sysData->setUnitsCount(unitsCount);
-        TreeItem *sys = new TreeItem(sysData);
-        m_systemsModel->addItem(sys, m_systemsModel->rootItem(), m_systemsModel->rootItem()->childCount());
-
-        QString sq = "SELECT sys.id as system, ut.test_state, count(ut.test_state) as state_count from system_unit_test ut, system_version sys ";
-                sq+= "where sys.id = ut.system_version and sys.id = "+ QString::number(sysData->systemVersionId()) +" ";
-                sq+= "group by sys.id, ut.test_state ";
-        QSqlQuery sQuery(sq, Global::i()->db());
-        while(sQuery.next())
-        {
-            if(sQuery.value("test_state").toInt() == 1)
-                sysData->setPassedCount(sQuery.value("state_count").toInt());
-            else if(sQuery.value("test_state").toInt() == 2)
-                sysData->setNotPassedCount(sQuery.value("state_count").toInt());
-        }
-    }
+    fillSystemModel(m_systemsModel, true);
 }
 
 void SystemsWidget::updateUnitsModel(int systemId, int systemVersionId)

@@ -48,6 +48,11 @@
         <string>Projekte</string>
        </attribute>
       </widget>
+      <widget class="QWidget" name="tracking">
+       <attribute name="title">
+        <string>Änderungsverfolgung</string>
+       </attribute>
+      </widget>
      </widget>
     </item>
    </layout>

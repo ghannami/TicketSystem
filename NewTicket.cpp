@@ -7,6 +7,7 @@
 #include <QVariant>
 #include <QSqlError>
 #include <QDebug>
+#include "TicketItem.h"
 
 NewTicket::NewTicket(QWidget *parent) :
     QDialog(parent),
@@ -66,23 +67,21 @@ void NewTicket::onSave()
         return;
     }
 
-    QSqlQuery query(Global::i()->db());
-    query.prepare("INSERT INTO ticket (type, from_user, to_user, system_version, state, unit_categorie, priority, title, date, customer) "
-                  "VALUES (:type, :from_user, :to_user, :system_version, :state, :unit_categorie, :priority, :title, :date, :customer)");
-    query.bindValue(":type", ui->typeBox->itemData(ui->typeBox->currentIndex()));
-    query.bindValue(":from_user", Global::i()->userID());
-    query.bindValue(":to_user", ui->toUserBox->itemData(ui->toUserBox->currentIndex()));
-    query.bindValue(":system_version", ui->systemBox->itemData(ui->systemBox->currentIndex()));
-    query.bindValue(":state", 1);
-    query.bindValue(":unit_categorie", ui->categorieBox->itemData(ui->categorieBox->currentIndex()));
-    query.bindValue(":priority", ui->priorityBox->itemData(ui->priorityBox->currentIndex()));
-    query.bindValue(":title", ui->title->text());
-    query.bindValue(":date", QDateTime::currentDateTime());
-    query.bindValue(":customer", ui->customerBox->itemData(ui->customerBox->currentIndex()));
-    if(!query.exec())
-        qDebug() << query.lastError().text();
+    TicketItem ticketItem;
+    ticketItem.setType(ui->typeBox->itemData(ui->typeBox->currentIndex()).toInt());
+    ticketItem.setFromUser(Global::i()->userID());
+    ticketItem.setToUser(ui->toUserBox->itemData(ui->toUserBox->currentIndex()).toInt());
+    ticketItem.setSystemVersion(ui->systemBox->itemData(ui->systemBox->currentIndex()).toInt());
+    ticketItem.setState(1);
+    ticketItem.setUnitCategorie(ui->categorieBox->itemData(ui->categorieBox->currentIndex()).toInt());
+    ticketItem.setPriority(ui->priorityBox->itemData(ui->priorityBox->currentIndex()).toInt());
+    ticketItem.setTitle(ui->title->text());
+    ticketItem.setDate(QDateTime::currentDateTime());
+    ticketItem.setCustomer(ui->customerBox->itemData(ui->customerBox->currentIndex()).toInt());
+    ticketItem.setDepartment(ui->department->itemData(ui->department->currentIndex()).toInt());
+    ticketItem.setDeadline(ui->deadline->dateTime());
+    int id = ticketItem.saveToDB();
 
-    int id = query.lastInsertId().toInt();
     CommentItem cItem;
     cItem.setFromUserID(Global::i()->userID());
     cItem.setToUserID(ui->toUserBox->itemData(ui->toUserBox->currentIndex()).toInt());
@@ -106,6 +105,10 @@ void NewTicket::setupeBoxes()
     ui->typeBox->clear();
     ui->toUserBox->clear();
     ui->priorityBox->clear();
+    ui->systemBox->clear();
+    ui->customerBox->clear();
+    ui->department->clear();
+
     int i = 0;
     QMapIterator<int, QString>mip(Global::i()->users());
     while(mip.hasNext())
@@ -147,6 +150,17 @@ void NewTicket::setupeBoxes()
         mip.next();
         ui->customerBox->insertItem(i++, mip.value(),mip.key());
     }
+
+    i = 0;
+    mip = QMapIterator<int, QString>(Global::i()->departments());
+    while(mip.hasNext())
+    {
+        mip.next();
+        ui->department->insertItem(i++, mip.value(),mip.key());
+    }
+
+    QDateTime dt = QDateTime::currentDateTime();
+    ui->deadline->setDateTime(dt.addDays(8));
 }
 
 void NewTicket::onSystemChanged(int index)

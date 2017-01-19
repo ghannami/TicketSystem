@@ -16,16 +16,7 @@ Global::Global()
 {
     connectDB();
 
-    users(true);
-    ticketTypes(true);
-    projects(true);
-    stats(true);
-    taskTypes(true);
-    prioritys(true);
-    systems(true);
-    systemVersions(true);
-    unitCategories(true);
-    customers(true);
+    loadDBValues();
 }
 
 Global *Global::instance()
@@ -99,6 +90,23 @@ void Global::connectDB()
 QSqlDatabase Global::db()
 {
     return m_db;
+}
+
+void Global::loadDBValues()
+{
+    users(true);
+    ticketTypes(true);
+    projects(true);
+    stats(true);
+    taskTypes(true);
+    prioritys(true);
+    systems(true);
+    systemVersions(true);
+    unitCategories(true);
+    customers(true);
+    trackingTypes(true);
+    trackingBehavior(true);
+    departments(true);
 }
 
 int Global::userID() const
@@ -200,10 +208,10 @@ QMap<int, QString> Global::systemVersions(bool reload)
     if(reload)
     {
         m_systemsVersions.clear();
-        QSqlQuery query("select sv.id as id, s.name as system_name, v.version as version from system s, system_version sv, version v where s.id = sv.system and v.id = sv.version ", db());
+        QSqlQuery query("select sv.id as id, s.name as system_name, v.version as version, sv.revision as revision from system s, system_version sv, version v where s.id = sv.system and v.id = sv.version order by sv.date desc ", db());
         while(query.next())
         {
-            m_systemsVersions.insert(query.value("id").toInt(), query.value("system_name").toString() + " " + query.value("version").toString());
+            m_systemsVersions.insert(query.value("id").toInt(), query.value("system_name").toString() + " " + query.value("version").toString()+" rev." + query.value("revision").toString());
         }
     }
     return m_systemsVersions;
@@ -245,6 +253,25 @@ QString Global::settingsFile()
     return dir.filePath("settings.xml");
 }
 
+QString Global::dateTimeFormat() const
+{
+    return "yyyy-MM-dd HH:mm:ss";
+}
+
+QMap<int, QString> Global::departments(bool reload)
+{
+    if(reload)
+    {
+        m_department.clear();
+        QSqlQuery query("SELECT * FROM department", db());
+        while(query.next())
+        {
+            m_department.insert(query.value("id").toInt(), query.value("name").toString());
+        }
+    }
+    return m_department;
+}
+
 QMap<int, QString> Global::prioritys(bool reload)
 {
     if(reload)
@@ -273,8 +300,35 @@ QMap<int, QString> Global::customers(bool reload)
     return m_customers;
 }
 
+QMap<int, QString> Global::trackingTypes(bool reload)
+{
+    if(reload)
+    {
+        m_trackingTypes.clear();
+        QSqlQuery query("SELECT * FROM tracking_type order by id asc", db());
+        while(query.next())
+        {
+            m_trackingTypes.insert(query.value("id").toInt(), query.value("name").toString());
+        }
+    }
+    return m_trackingTypes;
+}
+
+QMap<int, QString> Global::trackingBehavior(bool reload)
+{
+    if(reload)
+    {
+        m_trackingBehavior.clear();
+        QSqlQuery query("SELECT * FROM tracking_behavior order by id asc", db());
+        while(query.next())
+        {
+            m_trackingBehavior.insert(query.value("id").toInt(), query.value("name").toString());
+        }
+    }
+    return m_trackingBehavior;
+}
+
 void Global::setUserName(const QString &userName)
 {
     m_userName = userName;
 }
-

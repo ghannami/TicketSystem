@@ -81,3 +81,13 @@ void FilterObject::setCustomerID(int customerID)
     m_customerID = customerID;
 }
 
+int FilterObject::departmentID() const
+{
+    return m_departmentID;
+}
+
+void FilterObject::setDepartmentID(int departmentID)
+{
+    m_departmentID = departmentID;
+}
+

@@ -55,7 +55,11 @@ SOURCES += main.cpp\
     CustomersWidget.cpp \
     NewCustomer.cpp \
     CustomerData.cpp \
-    TicketsChartView.cpp
+    TicketsChartView.cpp \
+    TrackingWidget.cpp \
+    TrackingDetails.cpp \
+    TrackingData.cpp \
+    NewTracking.cpp
 
 HEADERS  += MainWindow.h \
     TicketModel.h \
@@ -89,7 +93,11 @@ HEADERS  += MainWindow.h \
     CustomersWidget.h \
     NewCustomer.h \
     CustomerData.h \
-    TicketsChartView.h
+    TicketsChartView.h \
+    TrackingWidget.h \
+    TrackingDetails.h \
+    TrackingData.h \
+    NewTracking.h
 
 FORMS    += mainwindow.ui \
     NewTicket.ui \
@@ -104,7 +112,10 @@ FORMS    += mainwindow.ui \
     SystemUnitDeatils.ui \
     CustomersWidget.ui \
     NewCustomer.ui \
-    TicketsChartView.ui
+    TicketsChartView.ui \
+    TrackingWidget.ui \
+    TrackingDetails.ui \
+    NewTracking.ui
 
 RESOURCES += \
     rsc.qrc

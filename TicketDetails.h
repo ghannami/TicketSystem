@@ -8,6 +8,7 @@ class TicketDetails;
 }
 
 class TicketModel;
+class TicketItem;
 
 class TicketDetails : public QWidget
 {
@@ -17,14 +18,15 @@ public:
     explicit TicketDetails(TicketModel *model, QWidget *parent = 0);
     ~TicketDetails();
 
-    int ticketID() const;
-    void setTicketID(int ticketID);
+    TicketItem *ticketItem() const;
+    void setTicketItem(TicketItem *ticketItem);
 
 protected slots:
     void send();
     void onFieldsChanged();
     void changeTicketState();
     void reopenTicket();
+    void onSave();
 
 protected:
     void loadComments();
@@ -34,12 +36,9 @@ signals:
 
 private:
     Ui::TicketDetails *ui;
-    int m_ticketID;
-    int m_ticketState;
-    int m_fromUserID;
-    int m_toUserID;
     TicketModel *m_model;
     bool m_blockFieldsChange;
+    TicketItem *m_ticketItem;
 };
 
 #endif // TICKETDETAILS_H

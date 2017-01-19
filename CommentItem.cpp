@@ -96,8 +96,8 @@ void CommentItem::saveToDB()
     }
     else
     {
-        QSqlQuery query(QString("UPDATE comments set date = %1, from_user = %2, to_user = %3, ticket = %4, text = '%5', viewed = %6")
-                        .arg(date().toString()).arg(fromUserID()).arg(toUserID()).arg(ticketID()).arg(text()).arg(viewed())
+        QSqlQuery query(QString("UPDATE comments set date = '%1'', from_user = %2, to_user = %3, ticket = %4, text = '%5', viewed = %6")
+                        .arg(date().toString(Global::i()->dateTimeFormat())).arg(fromUserID()).arg(toUserID()).arg(ticketID()).arg(text()).arg(viewed())
                         , Global::i()->db());
         query.exec();
     }

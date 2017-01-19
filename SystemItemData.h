@@ -39,6 +39,9 @@ public:
     QString versionName() const;
     void setVersionName(const QString &versionName);
 
+    QString revision() const;
+    void setRevision(const QString &revision);
+
 protected:
     virtual bool setValue(int column, const QVariant & value, int role) override;
     virtual QVariant value(int column, int role) override;
@@ -47,6 +50,7 @@ private:
     QSqlRecord m_record;
     QString m_name;
     QString m_version;
+    QString m_revision;
     QString m_versionName;
     QDate m_date;
     int m_ID;

@@ -18,6 +18,7 @@ class SystemsWidget : public QWidget
 public:
     explicit SystemsWidget(QWidget *parent = 0);
     ~SystemsWidget();
+    static void fillSystemModel(TreeModel *systemsModel, bool loadUnits = false);
 
 public slots:
     void newSystemUnit();

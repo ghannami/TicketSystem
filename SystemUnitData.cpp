@@ -1,7 +1,6 @@
 #include "SystemUnitData.h"
 #include <QColor>
 #include <QSqlQuery>
-#include "Global.h"
 #include <QSqlError>
 #include <QDebug>
 #include "Global.h"

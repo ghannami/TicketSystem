@@ -17,6 +17,8 @@ public:
     void connectDB();
     QSqlDatabase db();
 
+    void loadDBValues();
+
 
     int userID() const;
     void setUserID(int userID);
@@ -43,8 +45,15 @@ public:
 
     QMap<int, QString> customers(bool reload = false);
 
+    QMap<int, QString> trackingTypes(bool reload = false);
+
+    QMap<int, QString> trackingBehavior(bool reload = false);
+
+    QMap<int, QString> departments(bool reload = false);
+
     QString appPath();
     QString settingsFile();
+    QString dateTimeFormat() const;
 
 private:
     static Global *m_instance;
@@ -62,6 +71,9 @@ private:
     QMap<int, QString> m_systemsUnitCategories;
     QMap<int, QString> m_unitCategories;
     QMap<int, QString> m_customers;
+    QMap<int, QString> m_trackingTypes;
+    QMap<int, QString> m_trackingBehavior;
+    QMap<int, QString> m_department;
 };
 
 #endif // GLOBAL_H

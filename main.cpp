@@ -8,14 +8,15 @@ int main(int argc, char *argv[])
     if(Global::i()->login())
     {
         MainWindow w;
-        QStringList args = a.arguments();
-        QString arg;
-        if(args.count() > 1)
-            arg = args[1];
-        if(arg == "-d")
-            w.hide();
-        else
-            w.show();
+//        QStringList args = a.arguments();
+//        QString arg;
+//        if(args.count() > 1)
+//            arg = args[1];
+//        if(arg == "-d")
+//            w.hide();
+//        else
+//            w.show();
+        w.show();
         return a.exec();
     }
 }

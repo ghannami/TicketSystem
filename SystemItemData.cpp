@@ -6,9 +6,11 @@ SystemItemData::SystemItemData(QSqlRecord record):
 {
     m_passedCount = 0;
     m_notPassedCount = 0;
+    m_unitsCount = -1;
     setName(m_record.value("name").toString());
     setVersion(m_record.value("version").toString());
     setVersionName(m_record.value("version_name").toString());
+    setRevision(m_record.value("revision").toString());
     setID(m_record.value("id").toInt());
     setSystemVersionId(m_record.value("system_version").toInt());
     setDate(m_record.value("date").toDate());
@@ -33,7 +35,7 @@ QVariant SystemItemData::value(int column, int role)
             return t;
         }
         case 1:
-            return version();
+            return version()+" rev."+revision();
         case 2:
             return date();
         case 3:
@@ -46,13 +48,23 @@ QVariant SystemItemData::value(int column, int role)
     }
     else if(role == Qt::BackgroundColorRole)
     {
-        if(passedCount() == unitsCount())    // bestanden
+        if(passedCount() == unitsCount() && unitsCount() > 0)    // bestanden
         {
             return QColor(0,255,0, 50);
         }
         return QColor(230,0,0, 50);
     }
     return QVariant();
+}
+
+QString SystemItemData::revision() const
+{
+    return m_revision;
+}
+
+void SystemItemData::setRevision(const QString &revision)
+{
+    m_revision = revision;
 }
 
 QString SystemItemData::versionName() const

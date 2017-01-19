@@ -28,6 +28,9 @@ public:
     int customerID() const;
     void setCustomerID(int customerID);
 
+    int departmentID() const;
+    void setDepartmentID(int departmentID);
+
 private:
     int m_toUserID;
     int m_stateID;
@@ -36,6 +39,7 @@ private:
     int m_systemVersionID;
     int m_unitCategorieID;
     int m_customerID;
+    int m_departmentID;
 };
 
 #endif // FILTEROBJECT_H

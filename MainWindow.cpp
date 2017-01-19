@@ -7,6 +7,7 @@
 #include "Global.h"
 #include "SystemsWidget.h"
 #include "CustomersWidget.h"
+#include "TrackingWidget.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -42,6 +43,11 @@ MainWindow::MainWindow(QWidget *parent) :
     sLay->addWidget(sysWidget);
     ui->systems->setLayout(sLay);
 
+    TrackingWidget *trackingWidget = new TrackingWidget();
+    QHBoxLayout *trackingLay = new QHBoxLayout();
+    trackingLay->addWidget(trackingWidget);
+    ui->tracking->setLayout(trackingLay);
+
     /// TODO: TabWidget
     CustomersWidget *cstm = new CustomersWidget();
 
@@ -52,6 +58,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->mainToolBar->addAction(QIcon(":/icon/icons/clock.png"),tr("Neuer Task"), m_tasks, SLOT(newTask()));
     ui->mainToolBar->addAction(QIcon(":/icon/icons/file.png"),tr("Neuer Testfall"), sysWidget, SLOT(newSystemUnit()));
     ui->mainToolBar->addAction(QIcon(":/icon/icons/person.png"),tr("Neuer Kunde"), cstm, SLOT(newCustomer()));
+    ui->mainToolBar->addAction(QIcon(":/icon/icons/change.png"),tr("Neue Änderung"), trackingWidget, SLOT(newChange()));
 
     connect(cstm, SIGNAL(customerAdded()), m_tickets, SLOT(setupeBoxes()));
     connect(sysWidget, SIGNAL(ticketCreated()), m_tickets, SLOT(updateModel()));
