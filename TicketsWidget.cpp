@@ -18,6 +18,8 @@ TicketsWidget::TicketsWidget(QWidget *parent) :
     ui(new Ui::TicketsWidget)
 {
     ui->setupUi(this);
+    Global::i()->loadDBValues();
+
     m_model = new TicketModel();
     ui->ticketView->setModel(m_model);
     ui->ticketView->horizontalHeader()->setVisible(true);
@@ -25,11 +27,11 @@ TicketsWidget::TicketsWidget(QWidget *parent) :
     ui->ticketView->setAutoScroll(true);
 
     m_chartView = new TicketsChartView();
-    QVBoxLayout *chartLay = new QVBoxLayout();
+    QHBoxLayout *chartLay = new QHBoxLayout();
     chartLay->addWidget(m_chartView);
     ui->statisticWidget->setLayout(chartLay);
 
-    m_model->setHeaders(QStringList()<<"TicketID"<<"Titel"<<"Kunde"<<"Zugewiesen an"<<"Deadline"<<"Priorität"<<"");
+    m_model->setHeaders(QStringList()<<"TicketID"<<"Titel"<<"Kunde"<<"Zugewiesen an"<<"Deadline"<<"Priorität"<<"Typ"<<"");
 
     refreshModel();
     int i = 0;
@@ -39,12 +41,14 @@ TicketsWidget::TicketsWidget(QWidget *parent) :
     ui->ticketView->setColumnWidth(i++, 100);
     ui->ticketView->setColumnWidth(i++, 150);
     ui->ticketView->setColumnWidth(i++, 100);
+    ui->ticketView->setColumnWidth(i++, 100);
 
     ui->ticketView->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->ticketView->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->ticketView->horizontalHeader()->setStretchLastSection(true);
     ui->ticketView->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     ui->ticketView->verticalHeader()->setDefaultSectionSize(20);
+
     setupeBoxes();
 
     m_ticketDetails = new TicketDetails(m_model);
@@ -58,6 +62,7 @@ TicketsWidget::TicketsWidget(QWidget *parent) :
     connect(ui->priorityBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onFilterChanged()));
     connect(ui->typeBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onFilterChanged()));
     connect(ui->toUserBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onFilterChanged()));
+    connect(ui->fromUserBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onFilterChanged()));
     connect(ui->unitCategorieBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onFilterChanged()));
     connect(ui->systemBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onFilterChanged()));
     connect(ui->customerBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onFilterChanged()));
@@ -69,6 +74,8 @@ TicketsWidget::TicketsWidget(QWidget *parent) :
 
     QPixmap p(":/icon/icons/clipboard.png");
     ui->logoLabel->setPixmap(p.scaledToHeight(84, Qt::SmoothTransformation));
+
+    onFilterChanged();
 }
 
 TicketsWidget::~TicketsWidget()
@@ -102,6 +109,7 @@ void TicketsWidget::onFilterChanged()
     filter->setPriorityID(ui->priorityBox->itemData(ui->priorityBox->currentIndex()).toInt());
     filter->setStateID(ui->stateBox->itemData(ui->stateBox->currentIndex()).toInt());
     filter->setToUserID(ui->toUserBox->itemData(ui->toUserBox->currentIndex()).toInt());
+    filter->setFromUserID(ui->fromUserBox->itemData(ui->fromUserBox->currentIndex()).toInt());
     filter->setTypeID(ui->typeBox->itemData(ui->typeBox->currentIndex()).toInt());
     filter->setUnitCategorieID(ui->unitCategorieBox->itemData(ui->unitCategorieBox->currentIndex()).toInt());
     filter->setSystemVersionID(ui->systemBox->itemData(ui->systemBox->currentIndex()).toInt());
@@ -143,6 +151,7 @@ void TicketsWidget::setupeBoxes()
     ui->stateBox->clear();
     ui->typeBox->clear();
     ui->toUserBox->clear();
+    ui->fromUserBox->clear();
     ui->priorityBox->clear();
     ui->unitCategorieBox->clear();
     ui->systemBox->clear();
@@ -152,6 +161,7 @@ void TicketsWidget::setupeBoxes()
     ui->stateBox->insertItem(0,tr("Alle"),0);
     ui->typeBox->insertItem(0,tr("Alle"),0);
     ui->toUserBox->insertItem(0,tr("Alle"),0);
+    ui->fromUserBox->insertItem(0,tr("Alle"),0);
     ui->priorityBox->insertItem(0,tr("Alle"),0);
     ui->unitCategorieBox->insertItem(0,tr("Alle"),0);
     ui->systemBox->insertItem(0,tr("Alle"),0);
@@ -163,6 +173,7 @@ void TicketsWidget::setupeBoxes()
     while(mip.hasNext())
     {
         mip.next();
+        ui->fromUserBox->insertItem(i, mip.value(),mip.key());
         ui->toUserBox->insertItem(i++, mip.value(),mip.key());
     }
 

@@ -143,25 +143,27 @@ void TicketModel::updateModel()
 //    q           += " FROM ticket t, state s, user user1, user user2, priority prio, system_version sys, system_unit_categorie cat, customer cstm ";
 //    q           += " where t.state = s.id and user1.id = t.from_user and user2.id = t.to_user and prio.id = t.priority ";
 //    q           += " and cat.id = t.unit_categorie and sys.id = t.system_version and cstm.id = t.customer ";
-    QString q    = " SELECT * from ticket WHERE 1=1 ";
+    QString q    = "  SELECT * from ticket tkt, priority prio  WHERE tkt.priority = prio.id ";
     if(filterObject()->stateID() > 0)
-        q+= " AND state = " +QString::number(filterObject()->stateID()) + " ";
+        q+= " AND tkt.state = " +QString::number(filterObject()->stateID()) + " ";
     if(filterObject()->typeID() > 0)
-        q+= " AND type = " +QString::number(filterObject()->typeID()) + " ";
+        q+= " AND tkt.type = " +QString::number(filterObject()->typeID()) + " ";
     if(filterObject()->toUserID() > 0)
-        q+= " AND to_user = " +QString::number(filterObject()->toUserID()) + " ";
+        q+= " AND tkt.to_user = " +QString::number(filterObject()->toUserID()) + " ";
+    if(filterObject()->fromUserID() > 0)
+        q+= " AND tkt.from_user = " +QString::number(filterObject()->fromUserID()) + " ";
     if(filterObject()->priorityID() > 0)
-        q+= " AND priority = " +QString::number(filterObject()->priorityID()) + " ";
+        q+= " AND tkt.priority = " +QString::number(filterObject()->priorityID()) + " ";
     if(filterObject()->unitCategorieID() > 0)
-        q+= " AND unit_categorie = " +QString::number(filterObject()->unitCategorieID()) + " ";
+        q+= " AND tkt.unit_categorie = " +QString::number(filterObject()->unitCategorieID()) + " ";
     if(filterObject()->systemVersionID() > 0)
-        q+= " AND system_version = " +QString::number(filterObject()->systemVersionID()) + " ";
+        q+= " AND tkt.system_version = " +QString::number(filterObject()->systemVersionID()) + " ";
     if(filterObject()->customerID() > 0)
-        q+= " AND customer = " +QString::number(filterObject()->customerID()) + " ";
+        q+= " AND tkt.customer = " +QString::number(filterObject()->customerID()) + " ";
     if(filterObject()->departmentID() > 0)
-        q+= " AND department = " +QString::number(filterObject()->departmentID()) + " ";
+        q+= " AND tkt.department = " +QString::number(filterObject()->departmentID()) + " ";
 
-    q+= " order by state asc, priority desc, deadline asc;";
+    q+= " order by tkt.state asc, tkt.deadline asc, prio.number desc;";
 
     QSqlQuery query(q, Global::i()->db());
     while(query.next())

@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
     createTrayIcon();
 
     m_tickets = new TicketsWidget();
-    QHBoxLayout *tLay = new QHBoxLayout();
+    QVBoxLayout *tLay = new QVBoxLayout();
     tLay->addWidget(m_tickets);
     ui->tickets->setLayout(tLay);
 

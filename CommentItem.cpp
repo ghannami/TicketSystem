@@ -2,6 +2,7 @@
 #include <QSqlQuery>
 #include "Global.h"
 #include <QtCore>
+#include <QSqlError>
 
 CommentItem::CommentItem()
 {
@@ -92,14 +93,22 @@ void CommentItem::saveToDB()
         query.bindValue(":ticket", ticketID());
         query.bindValue(":text", text());
         query.bindValue(":viewed", viewed());
-        query.exec();
-    }
+        if(!query.exec())
+        {
+            qDebug() << query.lastError().text();
+            qDebug() << "Query: " << query.lastQuery();
+        }    
+	}
     else
     {
         QSqlQuery query(QString("UPDATE comments set date = '%1'', from_user = %2, to_user = %3, ticket = %4, text = '%5', viewed = %6")
                         .arg(date().toString(Global::i()->dateTimeFormat())).arg(fromUserID()).arg(toUserID()).arg(ticketID()).arg(text()).arg(viewed())
                         , Global::i()->db());
-        query.exec();
+        if(!query.exec())
+        {
+            qDebug() << query.lastError().text();
+            qDebug() << "Query: " << query.lastQuery();
+        }
     }
 }
 

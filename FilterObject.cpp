@@ -3,6 +3,7 @@
 FilterObject::FilterObject()
 {
     setToUserID(0);
+    setFromUserID(0);
     setStateID(0);
     setTypeID(0);
     setPriorityID(0);
@@ -89,5 +90,15 @@ int FilterObject::departmentID() const
 void FilterObject::setDepartmentID(int departmentID)
 {
     m_departmentID = departmentID;
+}
+
+int FilterObject::fromUserID() const
+{
+    return m_fromUserID;
+}
+
+void FilterObject::setFromUserID(int fromUserID)
+{
+    m_fromUserID = fromUserID;
 }
 

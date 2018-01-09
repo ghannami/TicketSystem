@@ -77,6 +77,8 @@ public:
 
     int saveToDB();
 
+protected:
+    void init();
 private:
     QSqlRecord m_record;
     bool m_viewed;

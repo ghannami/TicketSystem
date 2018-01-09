@@ -31,8 +31,12 @@ public:
     int departmentID() const;
     void setDepartmentID(int departmentID);
 
+    int fromUserID() const;
+    void setFromUserID(int fromUserID);
+
 private:
     int m_toUserID;
+    int m_fromUserID;
     int m_stateID;
     int m_typeID;
     int m_priorityID;

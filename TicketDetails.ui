@@ -23,28 +23,35 @@
       <property name="verticalSpacing">
        <number>4</number>
       </property>
-      <item row="19" column="2">
+      <item row="10" column="1">
+       <widget class="QLabel" name="label_6">
+        <property name="text">
+         <string>Erledigt</string>
+        </property>
+       </widget>
+      </item>
+      <item row="20" column="2">
        <widget class="QPushButton" name="changeState">
         <property name="text">
          <string>Schließen</string>
         </property>
        </widget>
       </item>
-      <item row="15" column="2">
+      <item row="16" column="2">
        <widget class="QLabel" name="processedByLabel2">
         <property name="text">
          <string>.</string>
         </property>
        </widget>
       </item>
-      <item row="16" column="1">
+      <item row="17" column="1">
        <widget class="QLabel" name="testedByLabel1">
         <property name="text">
          <string>Getestet von</string>
         </property>
        </widget>
       </item>
-      <item row="7" column="2">
+      <item row="8" column="2">
        <widget class="QComboBox" name="priorityBox"/>
       </item>
       <item row="0" column="2">
@@ -75,21 +82,21 @@
         </property>
        </widget>
       </item>
-      <item row="16" column="2">
+      <item row="17" column="2">
        <widget class="QLabel" name="testedByLabel2">
         <property name="text">
          <string>.</string>
         </property>
        </widget>
       </item>
-      <item row="14" column="1">
+      <item row="15" column="1">
        <widget class="QLabel" name="label_5">
         <property name="text">
          <string>Erstellt am</string>
         </property>
        </widget>
       </item>
-      <item row="18" column="1" colspan="2">
+      <item row="19" column="1" colspan="2">
        <widget class="QTextEdit" name="title">
         <property name="maximumSize">
          <size>
@@ -102,14 +109,14 @@
         </property>
        </widget>
       </item>
-      <item row="15" column="1">
+      <item row="16" column="1">
        <widget class="QLabel" name="processedByLabel1">
         <property name="text">
          <string>Erledigt von</string>
         </property>
        </widget>
       </item>
-      <item row="7" column="1">
+      <item row="8" column="1">
        <widget class="QLabel" name="label_4">
         <property name="text">
          <string>Priorität</string>
@@ -142,13 +149,6 @@
         </property>
        </widget>
       </item>
-      <item row="9" column="1">
-       <widget class="QLabel" name="label_6">
-        <property name="text">
-         <string>Erledigt</string>
-        </property>
-       </widget>
-      </item>
       <item row="6" column="1">
        <widget class="QLabel" name="label_7">
         <property name="text">
@@ -159,7 +159,7 @@
       <item row="6" column="2">
        <widget class="QComboBox" name="categorie"/>
       </item>
-      <item row="9" column="2">
+      <item row="10" column="2">
        <widget class="QSpinBox" name="percent">
         <property name="suffix">
          <string> %</string>
@@ -175,7 +175,7 @@
         </property>
        </widget>
       </item>
-      <item row="14" column="2">
+      <item row="15" column="2">
        <widget class="QLabel" name="createdOn">
         <property name="text">
          <string/>
@@ -213,45 +213,45 @@
         </property>
        </widget>
       </item>
-      <item row="13" column="1">
+      <item row="14" column="1">
        <widget class="QLabel" name="createdByLabel1">
         <property name="text">
          <string>Erstellt von</string>
         </property>
        </widget>
       </item>
-      <item row="13" column="2">
+      <item row="14" column="2">
        <widget class="QLabel" name="createdByLabel2">
         <property name="text">
          <string>.</string>
         </property>
        </widget>
       </item>
-      <item row="8" column="2">
+      <item row="9" column="2">
        <widget class="QComboBox" name="ticketToUserBox"/>
       </item>
-      <item row="8" column="1">
+      <item row="9" column="1">
        <widget class="QLabel" name="label_3">
         <property name="text">
          <string>Zugewiesen an</string>
         </property>
        </widget>
       </item>
-      <item row="12" column="1" colspan="2">
+      <item row="13" column="1" colspan="2">
        <widget class="Line" name="line_2">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
        </widget>
       </item>
-      <item row="19" column="1">
+      <item row="20" column="1">
        <widget class="QPushButton" name="reopen">
         <property name="text">
          <string>Wieder öffnen</string>
         </property>
        </widget>
       </item>
-      <item row="10" column="2">
+      <item row="11" column="2">
        <widget class="QPushButton" name="save">
         <property name="text">
          <string>speichern</string>
@@ -267,6 +267,16 @@
       </item>
       <item row="5" column="2">
        <widget class="QComboBox" name="systemBox"/>
+      </item>
+      <item row="7" column="1">
+       <widget class="QLabel" name="label_11">
+        <property name="text">
+         <string>Typ</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="2">
+       <widget class="QComboBox" name="typeBox"/>
       </item>
      </layout>
     </widget>

@@ -10,14 +10,30 @@
 
 TicketItem::TicketItem(const QSqlRecord &record)
 {
-    setProcessedBy(-1);
-    setTestedBy(-1);
+    init();
     setRecord(record);
 }
 
 TicketItem::TicketItem()
 {
+    init();
+}
+
+void TicketItem::init()
+{
+    setProcessedBy(-1);
+    setTestedBy(-1);
+    setPercentComplete(0);
+    setCustomer(-1);
+    setDepartment(-1);
+    setFromUser(-1);
     setID(-1);
+    setPriority(-1);
+    setState(-1);
+    setSystemVersion(-1);
+    setToUser(-1);
+    setType(-1);
+    setUnitCategorie(-1);
 }
 
 TicketItem::~TicketItem()
@@ -49,6 +65,9 @@ QVariant TicketItem::data(int column, int role) const
         case 5:
             return Global::i()->prioritys().value(priority());
             break;
+        case 6:
+            return Global::i()->ticketTypes().value(type());
+            break;
         }
     }
     else if(role == Qt::BackgroundColorRole)
@@ -65,10 +84,18 @@ QVariant TicketItem::data(int column, int role) const
         if(column == 4)
         {
             QPixmap p(22,22);
-            if(QDateTime::currentDateTime().daysTo(deadline()) < 0)
+            if(state() == 1 || state() == 2)
             {
-                p = QPixmap(":/icon/icons/alarm-red.png");
-                return p.scaledToHeight(22, Qt::SmoothTransformation);
+                if(QDateTime::currentDateTime().daysTo(deadline()) < 0)
+                {
+                    p = QPixmap(":/icon/icons/alarm-red.png");
+                    return p.scaledToHeight(22, Qt::SmoothTransformation);
+                }
+                else if(QDateTime::currentDateTime().daysTo(deadline()) == 0)
+                {
+                    p = QPixmap(":/icon/icons/alarm-yellow.png");
+                    return p.scaledToHeight(22, Qt::SmoothTransformation);
+                }
             }
             p.fill(QColor(250,250,250,0));
             return p;

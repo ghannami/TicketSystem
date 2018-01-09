@@ -57,7 +57,13 @@ TicketDetails::TicketDetails(TicketModel *model, QWidget *parent) :
         mip.next();
         ui->systemBox->insertItem(i++, mip.value(),mip.key());
     }
-
+    i = 0;
+    mip = QMapIterator<int, QString>(Global::i()->ticketTypes());
+    while(mip.hasNext())
+    {
+        mip.next();
+        ui->typeBox->insertItem(i++, mip.value(),mip.key());
+    }
     connect(ui->send, SIGNAL(clicked(bool)), this, SLOT(send()));
     connect(ui->save, SIGNAL(clicked(bool)), this, SLOT(onSave()));
 
@@ -66,6 +72,7 @@ TicketDetails::TicketDetails(TicketModel *model, QWidget *parent) :
     connect(ui->department, SIGNAL(currentIndexChanged(int)), this, SLOT(onFieldsChanged()));
     connect(ui->categorie, SIGNAL(currentIndexChanged(int)), this, SLOT(onFieldsChanged()));
     connect(ui->systemBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onFieldsChanged()));
+    connect(ui->typeBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onFieldsChanged()));
     connect(ui->percent, SIGNAL(valueChanged(int)), this, SLOT(onFieldsChanged()));
     connect(ui->deadline, SIGNAL(dateTimeChanged(QDateTime)), this, SLOT(onFieldsChanged()));
 
@@ -148,8 +155,8 @@ void TicketDetails::updateTicket()
             ui->changeState->setEnabled(true);
             ui->reopen->setEnabled(true);
         }
-        bool isUser = Global::i()->userID() == m_ticketItem->fromUser();
-        ui->deadline->setEnabled(isUser);
+//        bool isUser = Global::i()->userID() == m_ticketItem->fromUser();
+//        ui->deadline->setEnabled(isUser);
     }
 
     if(!m_ticketItem)
@@ -205,6 +212,13 @@ void TicketDetails::updateTicket()
         if(ui->systemBox->itemData(index).toInt() == m_ticketItem->systemVersion())
         {
             ui->systemBox->setCurrentIndex(index);
+        }
+    }
+    for(int index = 0; index < ui->typeBox->count(); index++)
+    {
+        if(ui->typeBox->itemData(index).toInt() == m_ticketItem->type())
+        {
+            ui->typeBox->setCurrentIndex(index);
         }
     }
 
@@ -285,14 +299,15 @@ void TicketDetails::changeTicketState()
     cItem.setFromUserID(Global::i()->userID());
     cItem.setToUserID(ui->commentToUserBox->itemData(ui->commentToUserBox->currentIndex()).toInt());
     cItem.setTicketID(m_ticketItem->ticketID());
-    cItem.setViewed(0);
 
     if(m_ticketItem->state() == 1)
     {
         m_ticketItem->setState(2);
         m_ticketItem->setProcessedBy(Global::i()->userID());
         m_ticketItem->setProcessedOn(QDateTime::currentDateTime());
+        m_ticketItem->setToUser(m_ticketItem->fromUser());
         m_ticketItem->saveToDB();
+        cItem.setViewed(0);
 
         cItem.setText(tr("Neuer Status: ")+Global::i()->stats().value(2));
         cItem.saveToDB();
@@ -304,6 +319,7 @@ void TicketDetails::changeTicketState()
         m_ticketItem->setState(3);
         m_ticketItem->setTestedBy(Global::i()->userID());
         m_ticketItem->setTestedOn(QDateTime::currentDateTime());
+        m_ticketItem->setToUser(m_ticketItem->fromUser());
         m_ticketItem->saveToDB();
 
         cItem.setText(tr("Neuer Status: ")+Global::i()->stats().value(3));
@@ -338,7 +354,7 @@ void TicketDetails::onSave()
         m_ticketItem->setPercentComplete(ui->percent->value());
         m_ticketItem->setDeadline(ui->deadline->dateTime());
         m_ticketItem->setSystemVersion(ui->systemBox->itemData(ui->systemBox->currentIndex()).toInt());
-
+        m_ticketItem->setType(ui->typeBox->itemData(ui->typeBox->currentIndex()).toInt());
         m_ticketItem->saveToDB();
 
         setTicketItem(nullptr);

@@ -21,7 +21,6 @@ TicketsChartView::TicketsChartView(QWidget *parent) :
 
     m_chartView = new QChartView(new QChart());
     m_chartView->setRenderHint(QPainter::Antialiasing);
-
     QHBoxLayout *lay = new QHBoxLayout();
     lay->addWidget(m_chartView);
     setLayout(lay);
